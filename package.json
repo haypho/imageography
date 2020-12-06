@@ -6,12 +6,13 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx && prettier . --check",
     "format": "prettier . --write"
   },
   "dependencies": {
     "@react-native-firebase/app": "^10.1.0",
+    "@react-native-firebase/auth": "^10.1.1",
     "react": "16.13.1",
     "react-native": "0.63.3",
     "react-native-paper": "^4.4.1",

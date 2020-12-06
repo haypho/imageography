@@ -6,7 +6,10 @@ import auth from '@react-native-firebase/auth';
 const SignIn: React.FC = () => {
   const email = 'hphothong@gmail.com';
   const password = 'password1';
-  const signIn = () => auth().signInWithEmailAndPassword(email, password);
+  const signIn = () =>
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => console.log(error));
 
   return (
     <View>

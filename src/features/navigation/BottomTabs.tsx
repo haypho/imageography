@@ -5,7 +5,7 @@ import GroupsRoute from '../groups';
 const BottomTabs: React.FC = () => {
   const [index, setIndex] = useState<number>(0);
   const [routes] = useState([
-    { key: 'groups', title: 'Groups', icon: 'groups' },
+    { key: 'groups', title: 'Groups', icon: 'layers' },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
