@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "892628587219",
+    "firebase_url": "https://imageography.firebaseio.com",
+    "project_id": "imageography",
+    "storage_bucket": "imageography.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892628587219:android:67027c8dd196270fdcba26",
+        "android_client_info": {
+          "package_name": "com.hphothong.imageography"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892628587219-adu3sgesc4all0c7ju43d16cv7j6usll.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiF2dh5UJvmIEcegkvjrNPA4E-tJYbRQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892628587219-adu3sgesc4all0c7ju43d16cv7j6usll.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
