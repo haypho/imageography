@@ -1,4 +1,4 @@
-package com.imageography;
+package com.hphothong.imageography;
 
 import android.app.Application;
 import android.content.Context;

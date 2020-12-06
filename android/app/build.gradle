@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.imageography"
+        applicationId "com.hphothong.imageography"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

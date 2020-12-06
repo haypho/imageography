@@ -1,4 +1,4 @@
-package com.imageography;
+package com.hphothong.imageography;
 
 import com.facebook.react.ReactActivity;
 
