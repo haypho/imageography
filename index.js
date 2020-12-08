@@ -4,7 +4,7 @@ import 'react-native-gesture-handler';
 
 import React from 'react';
 import { AppRegistry, StatusBar } from 'react-native';
-import App from './src/App';
+import App from './src/features/App';
 import { name as appName } from './app.json';
 import {
   Provider as PaperProvider,
