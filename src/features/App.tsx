@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { ActivityIndicator } from 'react-native-paper';
-import BottomTabNavigator from './features/navigation/BottomTabNavigator';
-import AuthStackNavigator from './features/navigation/AuthStackNavigator';
+import BottomTabNavigator from './navigation/BottomTabNavigator';
+import AuthStackNavigator from './navigation/AuthStackNavigator';
 
 declare const global: { HermesInternal: null | {} };
 
@@ -31,12 +30,11 @@ const App = () => {
     return <ActivityIndicator />;
   }
 
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      {user ? <BottomTabNavigator /> : <AuthStackNavigator />}
-    </>
-  );
+  if (!user) {
+    return <AuthStackNavigator />;
+  }
+
+  return <BottomTabNavigator />;
 };
 
 export default App;

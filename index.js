@@ -3,8 +3,8 @@
 import 'react-native-gesture-handler';
 
 import React from 'react';
-import { AppRegistry } from 'react-native';
-import App from './src/App';
+import { AppRegistry, StatusBar } from 'react-native';
+import App from './src/features/App';
 import { name as appName } from './app.json';
 import {
   Provider as PaperProvider,
@@ -21,6 +21,10 @@ const Main = () => {
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer theme={theme}>
+        <StatusBar
+          barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'}
+          backgroundColor={theme.colors.background}
+        />
         <App />
       </NavigationContainer>
     </PaperProvider>
