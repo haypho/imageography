@@ -15,7 +15,7 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* imageographyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* imageographyTests.m */; };
-		2F6C8552257D76C6001551E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F6C8551257D76C5001551E1 /* GoogleService-Info.plist */; };
+		2F84A1BB257F293100E2A673 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F84A1BA257F293100E2A673 /* GoogleService-Info.plist */; };
 		727D16797642F9D5671C1D9B /* libPods-imageography-imageographyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D1DD99F56A1061558204BDA /* libPods-imageography-imageographyTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A8301666E68B35EA84000945 /* libPods-imageography.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 037F85B5BA26F7D28894E481 /* libPods-imageography.a */; };
@@ -58,7 +58,7 @@
 		2863AF4BB438A9C6A9392B6F /* Pods-imageography.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imageography.debug.xcconfig"; path = "Target Support Files/Pods-imageography/Pods-imageography.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* imageography-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "imageography-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* imageography-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "imageography-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2F6C8551257D76C5001551E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2F84A1BA257F293100E2A673 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3D1DD99F56A1061558204BDA /* libPods-imageography-imageographyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-imageography-imageographyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		52066A4F09C071CA41F57E93 /* libPods-imageography-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-imageography-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5ED66CB3AD0713E8BF8FE3F8 /* Pods-imageography-imageographyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imageography-imageographyTests.release.xcconfig"; path = "Target Support Files/Pods-imageography-imageographyTests/Pods-imageography-imageographyTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				2F6C8551257D76C5001551E1 /* GoogleService-Info.plist */,
+				2F84A1BA257F293100E2A673 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* imageography */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* imageographyTests */,
@@ -353,7 +353,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				2F6C8552257D76C6001551E1 /* GoogleService-Info.plist in Resources */,
+				2F84A1BB257F293100E2A673 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
