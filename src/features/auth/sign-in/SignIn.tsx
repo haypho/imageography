@@ -1,9 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Appbar, Button, HelperText, TextInput } from 'react-native-paper';
 import { useFormikContext } from 'formik';
 import { SignInFormValues } from './signIn.validation';
 import { displayNameCapitalized } from '../../../../app.json';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import {
+  Keyboard,
+  StyleSheet,
+  TextInput as TextInputType,
+  View,
+} from 'react-native';
 import { margin, padding } from '../../../constants/styles';
 
 const styles = StyleSheet.create({
@@ -25,6 +30,7 @@ const styles = StyleSheet.create({
 });
 
 const SignIn: React.FC = () => {
+  const passwordRef = useRef<TextInputType>(null);
   const {
     values,
     errors,
@@ -60,6 +66,11 @@ const SignIn: React.FC = () => {
             value={values.email}
             onChangeText={setEmail}
             error={!!errors.email}
+            keyboardType="email-address"
+            autoCompleteType="email"
+            returnKeyType="next"
+            onSubmitEditing={(): void => passwordRef.current?.focus()}
+            blurOnSubmit={false}
           />
           <HelperText type="error" visible={!!errors.email}>
             {errors.email}
@@ -69,6 +80,8 @@ const SignIn: React.FC = () => {
             value={values.password}
             onChangeText={setPassword}
             error={!!errors.password}
+            secureTextEntry
+            ref={passwordRef}
           />
           <HelperText type="error" visible={!!errors.password}>
             {errors.password}
