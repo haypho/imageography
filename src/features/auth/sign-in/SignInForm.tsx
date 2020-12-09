@@ -1,18 +1,15 @@
-import React, { ReactNode, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Formik } from 'formik';
-import { SignInFormValues, validationSchema } from './signIn.validation';
+import { validationSchema, SignInFormValues } from './signIn.validation';
 import auth from '@react-native-firebase/auth';
-
-export interface SignInFormProps {
-  children?: ReactNode;
-}
+import SignIn from './SignIn';
 
 const initialValues: SignInFormValues = {
   email: '',
   password: '',
 };
 
-const SignInForm: React.FC<SignInFormProps> = ({ children }) => {
+const SignInForm: React.FC = () => {
   const onSubmit = useCallback((values: SignInFormValues) => {
     auth().signInWithEmailAndPassword(values.email, values.password);
   }, []);
@@ -22,7 +19,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ children }) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}>
-      {children}
+      <SignIn />
     </Formik>
   );
 };

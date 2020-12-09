@@ -11,8 +11,8 @@ const App = () => {
   const [user, setUser] = useState();
 
   const onAuthStateChangedHandler = useCallback(
-    (user) => {
-      setUser(user);
+    (newUser) => {
+      setUser(newUser);
       if (initializing) {
         setInitializing(false);
       }

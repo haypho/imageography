@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest --passWithNoTests",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx && prettier . --check && tsc --noEmit",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
@@ -60,7 +61,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && yarn test"
+      "pre-commit": "lint-staged && yarn test && yarn type-check"
     }
   },
   "lint-staged": {

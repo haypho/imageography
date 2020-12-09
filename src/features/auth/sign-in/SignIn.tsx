@@ -1,20 +1,34 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Button } from 'react-native-paper';
-import auth from '@react-native-firebase/auth';
+import React, { useCallback } from 'react';
+import { Button, TextInput } from 'react-native-paper';
+import { useFormikContext } from 'formik';
+import { SignInFormValues } from './signIn.validation';
 
 const SignIn: React.FC = () => {
-  const email = 'hphothong@gmail.com';
-  const password = 'password1';
-  const signIn = () =>
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .catch((error) => console.log(error));
+  const {
+    values,
+    setFieldValue,
+    submitForm,
+  } = useFormikContext<SignInFormValues>();
+
+  const setEmail = useCallback(
+    (email: string) => setFieldValue('email', email),
+    [setFieldValue],
+  );
+  const setPassword = useCallback(
+    (password: string) => setFieldValue('password', password),
+    [setFieldValue],
+  );
 
   return (
-    <View>
-      <Button onPress={signIn}>Sign In</Button>
-    </View>
+    <>
+      <TextInput label="Email" value={values.email} onChangeText={setEmail} />
+      <TextInput
+        label="Password"
+        value={values.password}
+        onChangeText={setPassword}
+      />
+      <Button onPress={submitForm}>Sign In</Button>
+    </>
   );
 };
 
