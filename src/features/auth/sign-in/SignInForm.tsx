@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 import { validationSchema, SignInFormValues } from './signIn.validation';
 import auth from '@react-native-firebase/auth';
 import SignIn from './SignIn';
@@ -10,9 +10,19 @@ const initialValues: SignInFormValues = {
 };
 
 const SignInForm: React.FC = () => {
-  const onSubmit = useCallback((values: SignInFormValues) => {
-    auth().signInWithEmailAndPassword(values.email, values.password);
-  }, []);
+  const onSubmit = useCallback(
+    (
+      values: SignInFormValues,
+      formikHelpers: FormikHelpers<SignInFormValues>,
+    ) => {
+      auth()
+        .signInWithEmailAndPassword(values.email, values.password)
+        .catch(() => {
+          formikHelpers.setSubmitting(false);
+        });
+    },
+    [],
+  );
 
   return (
     <Formik

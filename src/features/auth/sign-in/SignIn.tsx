@@ -92,7 +92,8 @@ const SignIn: React.FC = () => {
             onPress={signIn}
             mode="contained"
             contentStyle={styles.actionButton}
-            disabled={!isValid || isSubmitting}>
+            disabled={!isValid || isSubmitting}
+            loading={isSubmitting}>
             Sign In
           </Button>
         </View>
