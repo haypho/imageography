@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Appbar, Button, HelperText, TextInput } from 'react-native-paper';
 import { useFormikContext } from 'formik';
 import { SignInFormValues } from './signIn.validation';
@@ -27,10 +27,15 @@ const styles = StyleSheet.create({
   actionButton: {
     paddingVertical: padding.medium,
   },
+  error: {
+    textAlign: 'center',
+    fontSize: 16,
+  },
 });
 
 const SignIn: React.FC = () => {
   const passwordRef = useRef<TextInputType>(null);
+  const [useSecureEntry, setUseSecureEntry] = useState<boolean>(true);
   const {
     values,
     errors,
@@ -38,20 +43,38 @@ const SignIn: React.FC = () => {
     submitForm,
     isSubmitting,
     isValid,
+    status,
+    setStatus,
   } = useFormikContext<SignInFormValues>();
 
   const setEmail = useCallback(
-    (email: string) => setFieldValue('email', email),
-    [setFieldValue],
+    (email: string) => {
+      setFieldValue('email', email);
+      if (status) {
+        setStatus(undefined);
+      }
+    },
+    [setFieldValue, status, setStatus],
   );
+
   const setPassword = useCallback(
-    (password: string) => setFieldValue('password', password),
-    [setFieldValue],
+    (password: string) => {
+      setFieldValue('password', password);
+      if (status) {
+        setStatus(undefined);
+      }
+    },
+    [setFieldValue, status, setStatus],
   );
+
   const signIn = useCallback(() => {
     Keyboard.dismiss();
     submitForm();
   }, [submitForm]);
+
+  const toggleSecureEntry = useCallback(() => {
+    setUseSecureEntry(!useSecureEntry);
+  }, [setUseSecureEntry, useSecureEntry]);
 
   return (
     <>
@@ -80,11 +103,21 @@ const SignIn: React.FC = () => {
             value={values.password}
             onChangeText={setPassword}
             error={!!errors.password}
-            secureTextEntry
+            secureTextEntry={useSecureEntry}
+            onBlur={() => setUseSecureEntry(true)}
             ref={passwordRef}
+            right={
+              <TextInput.Icon
+                name={useSecureEntry ? 'eye-off-outline' : 'eye-outline'}
+                onPress={toggleSecureEntry}
+              />
+            }
           />
           <HelperText type="error" visible={!!errors.password}>
             {errors.password}
+          </HelperText>
+          <HelperText type="error" visible={!!status} style={styles.error}>
+            Invalid Credentials
           </HelperText>
         </View>
         <View style={styles.actionArea}>

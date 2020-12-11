@@ -18,6 +18,7 @@ const SignInForm: React.FC = () => {
       auth()
         .signInWithEmailAndPassword(values.email, values.password)
         .catch(() => {
+          formikHelpers.setStatus('invalid');
           formikHelpers.setSubmitting(false);
         });
     },

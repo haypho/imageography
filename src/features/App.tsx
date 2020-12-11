@@ -3,8 +3,17 @@ import auth from '@react-native-firebase/auth';
 import { ActivityIndicator } from 'react-native-paper';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import AuthStackNavigator from './navigation/AuthStackNavigator';
+import { View, StyleSheet } from 'react-native';
 
 declare const global: { HermesInternal: null | {} };
+
+const styles = StyleSheet.create({
+  activityIndicatorWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 const App = () => {
   const [initializing, setInitializing] = useState<boolean>(true);
@@ -27,7 +36,11 @@ const App = () => {
 
   if (initializing) {
     // TODO: Change to splash screen
-    return <ActivityIndicator />;
+    return (
+      <View style={styles.activityIndicatorWrapper}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   if (!user) {
