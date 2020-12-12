@@ -32,6 +32,13 @@ const slice = createSlice({
         loading: false,
       }),
     );
+    builder.addCase(
+      fetchAllGroups.rejected,
+      (state: GroupsState): GroupsState => ({
+        ...state,
+        loading: false,
+      }),
+    );
   },
 });
 

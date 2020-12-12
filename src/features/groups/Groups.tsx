@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { ActivityIndicator, Appbar, Text } from 'react-native-paper';
+import React, { useCallback, useEffect } from 'react';
+import { Appbar } from 'react-native-paper';
 import { Group } from '../models/group';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -7,6 +7,8 @@ import {
   groupsSelector,
 } from '../../store/selectors/groups.selectors';
 import { fetchAllGroups } from '../../store/thunks/groups.thunks';
+import { FlatList } from 'react-native';
+import GroupListItem from './GroupListItem';
 
 const Groups: React.FC = () => {
   const dispatch = useDispatch();
@@ -17,15 +19,21 @@ const Groups: React.FC = () => {
     dispatch(fetchAllGroups());
   }, [dispatch]);
 
+  const onRefresh = useCallback(() => dispatch(fetchAllGroups('server')), [
+    dispatch,
+  ]);
+
   return (
     <>
       <Appbar.Header>
         <Appbar.Content title="Groups" />
       </Appbar.Header>
-      {groupsLoading && <ActivityIndicator />}
-      {groups.map((group) => (
-        <Text key={group.id}>{group.id}</Text>
-      ))}
+      <FlatList
+        data={groups}
+        refreshing={groupsLoading}
+        onRefresh={onRefresh}
+        renderItem={GroupListItem}
+      />
     </>
   );
 };
