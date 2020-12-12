@@ -1,35 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Appbar, Text } from 'react-native-paper';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import { Group } from '../models/Group';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, Appbar, Text } from 'react-native-paper';
+import { Group } from '../models/group';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  groupsLoadingSelector,
+  groupsSelector,
+} from '../../store/selectors/groups.selectors';
+import { fetchAllGroups } from '../../store/thunks/groups.thunks';
 
 const Groups: React.FC = () => {
-  const signOut = () => auth().signOut();
-  const [groups, setGroups] = useState<Group[]>([]);
+  const dispatch = useDispatch();
+  const groups: Group[] = useSelector(groupsSelector);
+  const groupsLoading: boolean = useSelector(groupsLoadingSelector);
 
   useEffect(() => {
-    const user = auth().currentUser;
-    if (user) {
-      firestore()
-        .collection(`users/${user.uid}/groups`)
-        .get()
-        .then((snapshot) => {
-          if (!snapshot.empty) {
-            setGroups(snapshot.docs.map(Group.fromFirestoreDocument));
-          }
-        });
-    }
-  }, []);
+    dispatch(fetchAllGroups());
+  }, [dispatch]);
 
   return (
     <>
       <Appbar.Header>
         <Appbar.Content title="Groups" />
       </Appbar.Header>
-      <Button onPress={signOut}>Sign Out</Button>
+      {groupsLoading && <ActivityIndicator />}
       {groups.map((group) => (
-        <Text>{`${group.id}:${group.tsCreated}`}</Text>
+        <Text key={group.id}>{group.id}</Text>
       ))}
     </>
   );

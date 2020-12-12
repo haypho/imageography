@@ -13,6 +13,8 @@ import {
 } from 'react-native-paper';
 import { useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { Provider as ReduxProvider } from 'react-redux';
+import store from './src/store';
 
 const Main = () => {
   const colorScheme = useColorScheme();
@@ -28,11 +30,13 @@ const Main = () => {
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer theme={theme}>
-        <StatusBar
-          barStyle={barStyle}
-          backgroundColor={theme.colors.background}
-        />
-        <App />
+        <ReduxProvider store={store}>
+          <StatusBar
+            barStyle={barStyle}
+            backgroundColor={theme.colors.background}
+          />
+          <App />
+        </ReduxProvider>
       </NavigationContainer>
     </PaperProvider>
   );

@@ -11,14 +11,16 @@ export class Group {
     id: string,
     name: string,
     color: string,
-    tsCreated: Date,
-    tsUpdated?: Date,
+    tsCreated: Date | string,
+    tsUpdated?: Date | string,
   ) {
     this.id = id;
     this.name = name;
     this.color = color;
-    this.tsCreated = tsCreated;
-    this.tsUpdated = tsUpdated;
+    this.tsCreated =
+      typeof tsCreated === 'string' ? new Date(tsCreated) : tsCreated;
+    this.tsUpdated =
+      typeof tsUpdated === 'string' ? new Date(tsUpdated) : tsUpdated;
   }
 
   public static fromFirestoreDocument(
