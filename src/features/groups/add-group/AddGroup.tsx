@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   actionArea: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
   },
   actionButton: {
     flex: 1,
