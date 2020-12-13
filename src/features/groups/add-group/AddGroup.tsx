@@ -34,6 +34,7 @@ const AddGroup: React.FC = () => {
     setFieldValue,
     errors,
     submitForm,
+    isSubmitting,
   } = useFormikContext<AddGroupFormValues>();
 
   const setGroupName = useCallback(
@@ -86,7 +87,8 @@ const AddGroup: React.FC = () => {
             onPress={submitForm}
             mode="contained"
             style={styles.actionButton}
-            contentStyle={styles.actionButtonContent}>
+            contentStyle={styles.actionButtonContent}
+            disabled={isSubmitting}>
             Add
           </Button>
           <Button
@@ -94,7 +96,8 @@ const AddGroup: React.FC = () => {
             onPress={navigation.goBack}
             mode="outlined"
             style={styles.actionButton}
-            contentStyle={styles.actionButtonContent}>
+            contentStyle={styles.actionButtonContent}
+            disabled={isSubmitting}>
             Cancel
           </Button>
         </View>
