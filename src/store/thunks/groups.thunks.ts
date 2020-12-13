@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Group } from '../../features/models/group';
+import { Group } from '../../models/group';
 import { RootState } from '../store';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';

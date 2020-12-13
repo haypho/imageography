@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import { ActivityIndicator } from 'react-native-paper';
-import BottomTabNavigator from './navigation/BottomTabNavigator';
-import AuthStackNavigator from './navigation/AuthStackNavigator';
+import AuthStackNavigator from './navigation/auth/AuthStackNavigator';
 import { View, StyleSheet } from 'react-native';
+import BottomTabNavigator from './navigation/tabs/BottomTabNavigator';
 
 declare const global: { HermesInternal: null | {} };
 

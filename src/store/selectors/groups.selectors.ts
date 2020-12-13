@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { Group } from '../../features/models/group';
+import { Group } from '../../models/group';
 import { GroupsState } from '../slices/groups.slice';
 import { RootState } from '../store';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { List } from 'react-native-paper';
-import { Group } from '../models/group';
+import { Group } from '../../models/group';
 import { ListRenderItem } from 'react-native';
 
 const GroupListItem: ListRenderItem<Group> = ({ item }) => {
