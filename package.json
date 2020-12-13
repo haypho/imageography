@@ -13,11 +13,13 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
-    "@react-native-firebase/app": "^10.1.0",
-    "@react-native-firebase/auth": "^10.1.1",
+    "@react-native-firebase/app": "^10.2.0",
+    "@react-native-firebase/auth": "^10.2.0",
+    "@react-native-firebase/firestore": "^10.2.0",
     "@react-navigation/material-bottom-tabs": "^5.3.10",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
+    "@reduxjs/toolkit": "^1.5.0",
     "formik": "^2.2.5",
     "react": "16.13.1",
     "react-native": "0.63.3",
@@ -27,6 +29,9 @@
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.15.0",
     "react-native-vector-icons": "^7.1.0",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "yup": "^0.32.5"
   },
   "devDependencies": {
@@ -36,6 +41,7 @@
     "@types/jest": "^25.2.3",
     "@types/react": "^17.0.0",
     "@types/react-native": "^0.63.37",
+    "@types/react-redux": "^7.1.12",
     "@types/react-test-renderer": "^16.9.2",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
