@@ -80,12 +80,12 @@ const convertValueToHex = (value: number): string => {
   const metadata = map[index];
 
   const rgbValues: number[] = metadata.color;
-  const remainingColor: number = value % RGB_VALUE;
+  const remainingColor: number = Math.floor(value) % RGB_VALUE;
   if (remainingColor > 0) {
-    if (metadata.incrementIndex) {
+    if (metadata.incrementIndex !== undefined) {
       rgbValues[metadata.incrementIndex] += remainingColor;
     }
-    if (metadata.decrementIndex) {
+    if (metadata.decrementIndex !== undefined) {
       rgbValues[metadata.decrementIndex] -= remainingColor;
     }
   }
