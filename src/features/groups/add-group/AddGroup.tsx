@@ -5,7 +5,7 @@ import { View, StyleSheet } from 'react-native';
 import { Appbar, Button, HelperText, TextInput } from 'react-native-paper';
 import { MARGIN, PADDING } from '../../../constants';
 import { AddGroupFormValues } from './addGroup.validation';
-import ColorSwatch from '../../../components/color-swatch';
+import ColorPicker from '../../../components/color-picker';
 
 const styles = StyleSheet.create({
   container: {
@@ -75,11 +75,7 @@ const AddGroup: React.FC = () => {
           <HelperText type="error" visible={!!errors.color}>
             {errors.color}
           </HelperText>
-          <ColorSwatch
-            value={values.color}
-            onPress={setGroupColor}
-            count={12}
-          />
+          <ColorPicker />
         </View>
         <View style={styles.actionArea}>
           <Button

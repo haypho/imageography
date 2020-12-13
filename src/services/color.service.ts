@@ -20,6 +20,12 @@ export default class ColorService {
     return ColorService.randomColor();
   }
 
+  public static toHex(value: number): string {
+    const multipleOf16: number = Math.floor(value / 16);
+    const multipleOf1: number = Math.floor(value) % 16;
+    return `${HEX_VALUES[multipleOf16]}${HEX_VALUES[multipleOf1]}`;
+  }
+
   private static randomColor(): string {
     const values: string[] = [];
 
