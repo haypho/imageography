@@ -2,12 +2,12 @@ import auth from '@react-native-firebase/auth';
 import React, { useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Appbar, Avatar, Button } from 'react-native-paper';
-import { margin, padding } from '../../constants/styles';
+import { MARGIN, PADDING } from '../../constants';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: margin.medium,
+    margin: MARGIN.medium,
   },
   content: {
     flex: 1,
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   actionButtonContent: {
-    paddingVertical: padding.medium,
+    paddingVertical: PADDING.medium,
   },
 });
 

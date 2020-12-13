@@ -9,12 +9,12 @@ import {
 import { fetchAllGroups } from '../../store/thunks/groups.thunks';
 import { FlatList, StyleSheet } from 'react-native';
 import GroupListItem from './GroupListItem';
-import { margin } from '../../constants/styles';
+import { MARGIN } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   searchbar: {
-    margin: margin.medium,
+    margin: MARGIN.medium,
   },
   fab: {
     position: 'absolute',

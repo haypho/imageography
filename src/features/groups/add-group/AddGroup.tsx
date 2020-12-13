@@ -3,13 +3,13 @@ import { useFormikContext } from 'formik';
 import React, { useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Appbar, Button, HelperText, TextInput } from 'react-native-paper';
-import { margin, padding } from '../../../constants/styles';
+import { MARGIN, PADDING } from '../../../constants';
 import { AddGroupFormValues } from './addGroup.validation';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: margin.large,
+    margin: MARGIN.large,
   },
   content: {
     flex: 1,
@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     flex: 1,
-    marginHorizontal: margin.small,
+    marginHorizontal: MARGIN.small,
   },
   actionButtonContent: {
-    paddingVertical: padding.small,
+    paddingVertical: PADDING.small,
   },
 });
 
@@ -67,7 +67,7 @@ const AddGroup: React.FC = () => {
             label="Color"
             mode="outlined"
             placeholder="#FFF222"
-            value={values.color}
+            value={values.color.toUpperCase()}
             onChangeText={setGroupColor}
           />
           <HelperText type="error" visible={!!errors.color}>

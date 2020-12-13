@@ -9,12 +9,12 @@ import {
   TextInput as TextInputType,
   View,
 } from 'react-native';
-import { margin, padding } from '../../../constants/styles';
+import { MARGIN, PADDING } from '../../../constants';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: margin.large,
+    margin: MARGIN.large,
   },
   content: {
     flex: 1,
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   actionButton: {
-    paddingVertical: padding.medium,
+    paddingVertical: PADDING.medium,
   },
   error: {
     textAlign: 'center',
