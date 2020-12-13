@@ -1,7 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import React, { useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Appbar, Button } from 'react-native-paper';
+import { Appbar, Avatar, Button } from 'react-native-paper';
 import { margin, padding } from '../../constants/styles';
 
 const styles = StyleSheet.create({
@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  avatar: {
+    alignSelf: 'center',
   },
   actionButtonContent: {
     paddingVertical: padding.medium,
@@ -26,7 +29,9 @@ const Account: React.FC = () => {
         <Appbar.Content title="Account" />
       </Appbar.Header>
       <View style={styles.container}>
-        <View style={styles.content} />
+        <View style={styles.content}>
+          <Avatar.Icon icon="account" style={styles.avatar} />
+        </View>
         <Button
           icon="logout"
           contentStyle={styles.actionButtonContent}
