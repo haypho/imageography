@@ -16,6 +16,9 @@ const AddGroupForm: React.FC = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      validateOnChange={false}
+      validateOnBlur={false}
+      validateOnMount={false}
       onSubmit={onSubmit}>
       <AddGroup />
     </Formik>
