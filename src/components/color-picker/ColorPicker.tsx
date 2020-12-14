@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { IconButton } from 'react-native-paper';
 import { MARGIN } from '../../constants';
@@ -100,17 +100,11 @@ const ColorPicker: React.FC = () => {
         end={{ x: 1, y: 1 }}
         locations={[0, 0.5, 1]}
         colors={['#fff', blendColor, '#000']}
-        onLayout={(event: LayoutChangeEvent) => {
-          console.log(event.nativeEvent.layout);
-        }}
         style={styles.linearGradient}>
         <PanGestureHandler
           onGestureEvent={onGestureEvent}
           onHandlerStateChange={onGestureEvent}>
           <Animated.View
-            onLayout={(event) =>
-              console.log('animated view: ', event.nativeEvent.layout)
-            }
             style={[
               styles.cursor,
               {
@@ -122,15 +116,7 @@ const ColorPicker: React.FC = () => {
                 ],
               },
             ]}>
-            <IconButton
-              icon="circle-outline"
-              color="grey"
-              size={30}
-              style={{ position: 'relative', top: 0, left: 0 }}
-              onLayout={(event) =>
-                console.log('icon', event.nativeEvent.layout)
-              }
-            />
+            <IconButton icon="circle-outline" color="grey" size={30} />
           </Animated.View>
         </PanGestureHandler>
       </LinearGradient>
