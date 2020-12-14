@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { IconButton } from 'react-native-paper';
 import { MARGIN } from '../../constants';
@@ -16,9 +16,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 15,
   },
-  cursor: {
-    position: 'relative',
-  },
+  cursor: {},
 });
 
 const ColorPicker: React.FC = () => {
@@ -56,9 +54,21 @@ const ColorPicker: React.FC = () => {
     [
       set(transX, add(transX, sub(dragX, prevDragX))),
       set(prevDragX, dragX),
-      transX,
+      transX.interpolate({
+        inputRange: [-15, 345],
+        outputRange: [-15, 345],
+        extrapolate: Animated.Extrapolate.CLAMP,
+      }),
     ],
-    [set(dragX, 0), set(prevDragX, 0), transX],
+    [
+      set(dragX, 0),
+      set(prevDragX, 0),
+      transX.interpolate({
+        inputRange: [-15, 345],
+        outputRange: [-15, 345],
+        extrapolate: Animated.Extrapolate.CLAMP,
+      }),
+    ],
   );
 
   const translateY = cond(
@@ -66,9 +76,21 @@ const ColorPicker: React.FC = () => {
     [
       set(transY, add(transY, sub(dragY, prevDragY))),
       set(prevDragY, dragY),
-      transY,
+      transY.interpolate({
+        inputRange: [-16, 187],
+        outputRange: [-16, 187],
+        extrapolate: Animated.Extrapolate.CLAMP,
+      }),
     ],
-    [set(dragY, 0), set(prevDragY, 0), transY],
+    [
+      set(dragY, 0),
+      set(prevDragY, 0),
+      transY.interpolate({
+        inputRange: [-16, 187],
+        outputRange: [-16, 187],
+        extrapolate: Animated.Extrapolate.CLAMP,
+      }),
+    ],
   );
 
   return (
@@ -78,11 +100,17 @@ const ColorPicker: React.FC = () => {
         end={{ x: 1, y: 1 }}
         locations={[0, 0.5, 1]}
         colors={['#fff', blendColor, '#000']}
+        onLayout={(event: LayoutChangeEvent) => {
+          console.log(event.nativeEvent.layout);
+        }}
         style={styles.linearGradient}>
         <PanGestureHandler
           onGestureEvent={onGestureEvent}
           onHandlerStateChange={onGestureEvent}>
           <Animated.View
+            onLayout={(event) =>
+              console.log('animated view: ', event.nativeEvent.layout)
+            }
             style={[
               styles.cursor,
               {
@@ -94,7 +122,15 @@ const ColorPicker: React.FC = () => {
                 ],
               },
             ]}>
-            <IconButton icon="circle-outline" color="white" size={30} />
+            <IconButton
+              icon="circle-outline"
+              color="grey"
+              size={30}
+              style={{ position: 'relative', top: 0, left: 0 }}
+              onLayout={(event) =>
+                console.log('icon', event.nativeEvent.layout)
+              }
+            />
           </Animated.View>
         </PanGestureHandler>
       </LinearGradient>
