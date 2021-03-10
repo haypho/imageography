@@ -5,9 +5,9 @@
 ## Definition
 ```
 {
-  name: string,
+  group: reference,
   latLng: geopoint,
-  groupID: string,
+  name: string,
   tsCreated: timestamp,
   tsUpdated?: timestamp
 }
@@ -16,12 +16,12 @@
 ## Example
 ```json
 {
-  "name": "New Group",
+  "group": "groups/MMmNTVx11zQdiQrmRXBtoyTgKxX2",
   "latLng": {
     "latitude": 142.354,
     "longitude": -35.243,
   },
-  "groupID": "MMmNTVx11zQdiQrmRXBtoyTgKxX2",
+  "name": "New Marker",
   "tsCreated": "2021-12-31T23:59:59.999999999Z"
 }
 ```
