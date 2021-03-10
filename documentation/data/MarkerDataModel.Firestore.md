@@ -5,6 +5,7 @@
 ## Definition
 ```
 {
+  author: string,
   images: Array<string>,
   latLng: geopoint,
   name: string,
@@ -16,6 +17,7 @@
 ## Example
 ```json
 {
+  "author": "JohnDoe123",
   "images": [
     "https://Firebase-store-download-link",
   ],
