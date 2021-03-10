@@ -5,7 +5,7 @@
 ## Definition
 ```
 {
-  group: reference,
+  images: Array<string>,
   latLng: geopoint,
   name: string,
   tsCreated: timestamp,
@@ -16,7 +16,9 @@
 ## Example
 ```json
 {
-  "group": "groupCollection/MMmNTVx11zQdiQrmRXBtoyTgKxX2",
+  "images": [
+    "https://Firebase-store-download-link",
+  ],
   "latLng": {
     "latitude": 142.354,
     "longitude": -35.243,
