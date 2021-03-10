@@ -5,18 +5,18 @@
 ## Definition
 ```
 {
-  name: string,
   color: string,
-  tsCreated: firebase_timestamp,
-  tsUpdated?: firebase_timestamp
+  name: string,
+  tsCreated: timestamp,
+  tsUpdated?: timestamp
 }
 ```
 
 ## Example
 ```json
 {
-  "name": "New Group",
   "color": "#ff21da",
+  "name": "New Group",
   "tsCreated": "2021-12-31T23:59:59.999999999Z"
 }
 ```
