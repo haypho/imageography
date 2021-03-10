@@ -5,6 +5,8 @@
 ## Definition
 ```
 {
+  author: string,
+  authorID: string,
   color: string,
   markers: Array<reference>,
   name: string,
@@ -16,6 +18,8 @@
 ## Example
 ```json
 {
+  "author": "JohnDoe123",
+  "authorID": "iIgG62hFWQndW",
   "color": "#ff21da",
   "markers": [
     "markerCollection/MGHjdb63hTcX",
