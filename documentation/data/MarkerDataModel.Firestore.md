@@ -6,9 +6,10 @@
 ```
 {
   name: string,
+  latLng: geopoint,
   groupID: string,
-  tsCreated: firebase_timestamp,
-  tsUpdated?: firebase_timestamp
+  tsCreated: timestamp,
+  tsUpdated?: timestamp
 }
 ```
 
