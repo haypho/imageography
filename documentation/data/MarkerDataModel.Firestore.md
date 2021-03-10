@@ -16,7 +16,7 @@
 ## Example
 ```json
 {
-  "group": "groups/MMmNTVx11zQdiQrmRXBtoyTgKxX2",
+  "group": "groupCollection/MMmNTVx11zQdiQrmRXBtoyTgKxX2",
   "latLng": {
     "latitude": 142.354,
     "longitude": -35.243,
