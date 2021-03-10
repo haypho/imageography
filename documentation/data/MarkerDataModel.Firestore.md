@@ -6,6 +6,7 @@
 ```
 {
   author: string,
+  authorID: string,
   images: Array<string>,
   latLng: geopoint,
   name: string,
@@ -18,6 +19,7 @@
 ```json
 {
   "author": "JohnDoe123",
+  "authorID": "kITE53g942FsO",
   "images": [
     "https://Firebase-store-download-link",
   ],
