@@ -17,6 +17,10 @@
 ```json
 {
   "name": "New Group",
+  "latLng": {
+    "latitude": 142.354,
+    "longitude": -35.243,
+  },
   "groupID": "MMmNTVx11zQdiQrmRXBtoyTgKxX2",
   "tsCreated": "2021-12-31T23:59:59.999999999Z"
 }
