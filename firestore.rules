@@ -4,91 +4,72 @@ service cloud.firestore {
   	// "get" and "list" fall under the "read" category
     // "create", "delete", and "update" fall under the "write" category
     
-    function isUserAuthenticated() {
+    function isAuthenticated() {
     	return request.auth.uid != null
     }
-    
-    function isCurrentUser(userID) {
-    	return userID == request.auth.uid
+
+    function isAuthor() {
+      return request.auth.uid == resource.data.authorID
+    }
+
+    function isHexColorValid(color) {
+      return color is string && color.matches('#([a-fA-F0-9]{3}){1,2}')
+    }
+
+    function isNotEmpty(value) {
+      return value is string && value.size() > 0
+    }
+
+    function isTimestampValid(ts) {
+      return ts is timestamp
+    }
+
+    function isVisibilityValid(visibility) {
+      return visibility is string && visibility in ['public', 'private']
+    }
+
+    match /groups/{groupID} {
+      function allowCreateGroup() {
+        return isNotEmpty(request.resource.data.author) &&
+          isNotEmpty(request.resource.data.authorID) &&
+          isHexColorValid(request.resource.data.color) &&
+          request.resource.data.markers is list &&
+          isNotEmpty(request.resource.data.name) &&
+          isTimestampValid(request.resource.data.tsCreated) &&
+          request.auth.uid == request.resource.data.authorID
+      }
+
+      allow read: if isAuthenticated() && isAuthor()
+
+      allow create: if isAuthenticated() && allowCreateGroup()
+
+      allow update: if isAuthenticated() && allowCreateGroup() && isTimestampValid(request.resource.data.tsUpdated)
+
+      allow delete: if isAuthenticated() && request.auth.uid == request.resource.data.authorID
+    }
+
+    match /markers/{markerID} {
+      function isCreateMarkerValid() {
+        return isNotEmpty(request.resource.data.author) &&
+          isNotEmpty(request.resource.data.authorID) &&
+          request.resource.data.images is list &&
+          request.resource.data.latLng != null &&
+          isNotEmpty(request.resource.data.name) &&
+          isTimestampValid(request.resource.data.tsCreated) &&
+          isVisibilityValid(request.resource.data.visibility)
+      }
+
+      allow read: if isAuthenticated() && (isAuthor() || resource.data.visibility == 'public')
+
+      allow create: if isAuthenticated() && isCreateMarkerValid()
+      
+      allow update: if isAuthenticated() && isCreateMarkerValid() && isTimestampValid(request.resource.data.tsUpdated)
+
+      allow delete: if isAuthenticated() && isAuthor()
     }
     
     match /users/{userID} {
-
-      allow read, write: if isUserAuthenticated() && isCurrentUser(userID)
-      
-    	match /groups/{groupID} {
-    		
-        function isGroupNameValid() {
-        	return request.resource.data.name is string &&
-          	request.resource.data.name.size() > 0
-        }
-        
-        function isGroupHexColorValid() {
-        	return request.resource.data.color is string &&
-          	request.resource.data.color.matches('#([a-fA-F0-9]{3}){1,2}')
-        }
-        
-        function isGroupCreatedTimestampValid() {
-        	return request.resource.data.createdTimestamp is timestamp
-        }
-        
-        function isGroupUpdatedTimestampValid() {
-        	return request.resource.data.updatedTimestamp is timestamp
-        }
-        
-        allow read: if isUserAuthenticated() && isCurrentUser(userID)
-        
-        allow create: if isUserAuthenticated()  &&
-        	isCurrentUser(userID) &&
-          isGroupNameValid() &&
-          isGroupHexColorValid() &&
-          isGroupCreatedTimestampValid()
-          
-        allow update: if isUserAuthenticated() &&
-        	isCurrentUser(userID) &&
-          isGroupNameValid() &&
-          isGroupHexColorValid() &&
-          isGroupCreatedTimestampValid() &&
-          isGroupUpdatedTimestampValid()
-          
-        allow delete: if isUserAuthenticated() && isCurrentUser(userID)
-      }
-    }
-    
-    match /markers/{markerID} {
-    	
-      function isMarkerPublic() {
-      	return resource.data.visibility == 'public';
-      }
-      
-      function isMarkerCreator() {
-      	return resource.data.creatorID == request.auth.uid
-      }
-      
-      function isMarkerVisibilityValid() {
-      	return request.resource.data.visibility is string &&
-        	request.resource.data.visibility in ['public', 'private']
-      }
-      
-      function isMarkerNameValid() {
-      	return request.resource.data.name is string &&
-        	request.resource.data.name.size() > 0
-      }
-      
-      function isMarkerGroupValid() {
-      	return request.resource.data.groupID is string &&
-        	exists(/databases/$(database)/documents/users/$(request.auth.uid)/groups/$(request.resource.data.groupID))
-      }
-    
-    	allow read: if isUserAuthenticated() && (isMarkerPublic() || isMarkerCreator())
-      
-      allow create, update: if isUserAuthenticated() &&
-      	isMarkerCreator() &&
-        isMarkerVisibilityValid() &&
-        isMarkerNameValid() &&
-        isMarkerGroupValid()
-      
-      allow delete: if isUserAuthenticated() && isMarkerCreator()
+      allow read, write: if isUserAuthenticated() && request.auth.uid == userID
     }
   }
 }
