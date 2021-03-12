@@ -29,6 +29,7 @@ const SignInForm: React.FC = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      validateOnChange={false}
       onSubmit={onSubmit}>
       <SignIn />
     </Formik>

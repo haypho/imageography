@@ -45,6 +45,7 @@ const SignIn: React.FC = () => {
     isValid,
     status,
     setStatus,
+    validateField,
   } = useFormikContext<SignInFormValues>();
 
   const setEmail = useCallback(
@@ -53,8 +54,11 @@ const SignIn: React.FC = () => {
       if (status) {
         setStatus(undefined);
       }
+      if (errors.email) {
+        validateField('email');
+      }
     },
-    [setFieldValue, status, setStatus],
+    [setFieldValue, status, setStatus, errors.email, validateField],
   );
 
   const setPassword = useCallback(
@@ -63,8 +67,11 @@ const SignIn: React.FC = () => {
       if (status) {
         setStatus(undefined);
       }
+      if (errors.password) {
+        validateField('password');
+      }
     },
-    [setFieldValue, status, setStatus],
+    [setFieldValue, status, setStatus, errors.password, validateField],
   );
 
   const signIn = useCallback(() => {
@@ -88,7 +95,7 @@ const SignIn: React.FC = () => {
             placeholder="example@email.com"
             value={values.email}
             onChangeText={setEmail}
-            error={!!errors.email}
+            error={errors.email || status}
             keyboardType="email-address"
             autoCompleteType="email"
             returnKeyType="next"
@@ -102,7 +109,7 @@ const SignIn: React.FC = () => {
             label="Password"
             value={values.password}
             onChangeText={setPassword}
-            error={!!errors.password}
+            error={errors.password || status}
             secureTextEntry={useSecureEntry}
             onBlur={() => setUseSecureEntry(true)}
             ref={passwordRef}
@@ -115,9 +122,6 @@ const SignIn: React.FC = () => {
           />
           <HelperText type="error" visible={!!errors.password}>
             {errors.password}
-          </HelperText>
-          <HelperText type="error" visible={!!status} style={styles.error}>
-            Invalid Credentials
           </HelperText>
         </View>
         <View style={styles.actionArea}>
