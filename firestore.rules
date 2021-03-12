@@ -29,7 +29,7 @@ service cloud.firestore {
     }
 
     match /groups/{groupID} {
-      function allowCreateGroup() {
+      function isCreateGroupValid() {
         return isNotEmpty(request.resource.data.author) &&
           isNotEmpty(request.resource.data.authorID) &&
           isHexColorValid(request.resource.data.color) &&
@@ -41,9 +41,9 @@ service cloud.firestore {
 
       allow read: if isAuthenticated() && isAuthor()
 
-      allow create: if isAuthenticated() && allowCreateGroup()
+      allow create: if isAuthenticated() && isCreateGroupValid()
 
-      allow update: if isAuthenticated() && allowCreateGroup() && isTimestampValid(request.resource.data.tsUpdated)
+      allow update: if isAuthenticated() && isCreateGroupValid() && isTimestampValid(request.resource.data.tsUpdated)
 
       allow delete: if isAuthenticated() && request.auth.uid == request.resource.data.authorID
     }
