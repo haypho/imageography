@@ -11,6 +11,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import GroupListItem from './GroupListItem';
 import { MARGIN } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
+import GroupListEmptyComponent from './GroupListEmptyComponent';
 
 const styles = StyleSheet.create({
   searchbar: {
@@ -67,6 +68,9 @@ const Groups: React.FC = () => {
         onRefresh={onRefresh}
         renderItem={GroupListItem}
         ItemSeparatorComponent={Divider}
+        ListEmptyComponent={() => (
+          <GroupListEmptyComponent isFiltered={!!searchQuery} />
+        )}
       />
       <FAB
         style={styles.fab}
