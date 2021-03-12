@@ -9,7 +9,8 @@
     "test": "jest --passWithNoTests",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx && prettier . --check && tsc --noEmit",
     "format": "prettier . --write",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "deploy:firestore:rules": "firebase deploy --only firestore:rules"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
@@ -49,6 +50,7 @@
     "@typescript-eslint/parser": "^2.27.0",
     "babel-jest": "^25.1.0",
     "eslint": "^6.5.1",
+    "firebase-tools": "^9.6.1",
     "husky": "^4.3.4",
     "jest": "^25.1.0",
     "lint-staged": "^10.5.3",
