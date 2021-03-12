@@ -1,5 +1,4 @@
-import hexValues from './hexValues';
-
-export const HEX_VALUES = hexValues;
-export { HEX_REGEX } from './regex';
-export { MARGIN, PADDING } from './styles';
+export * from './hexValues';
+export * from './regex';
+export * from './styles';
+export * from './firebase.constants';

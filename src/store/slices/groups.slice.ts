@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, Slice } from '@reduxjs/toolkit';
 import { Group } from '../../models/group';
 import { fetchAllGroups } from '../thunks/groups.thunks';
 
@@ -12,33 +12,23 @@ const initialState: GroupsState = {
   loading: false,
 };
 
-const slice = createSlice({
+const slice: Slice<GroupsState, {}, 'groupsSlice'> = createSlice({
   initialState,
   name: 'groupsSlice',
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(
-      fetchAllGroups.pending,
-      (state: GroupsState): GroupsState => ({
-        ...state,
-        loading: true,
-      }),
-    );
-    builder.addCase(
-      fetchAllGroups.fulfilled,
-      (state: GroupsState, action: PayloadAction<Group[]>): GroupsState => ({
-        ...state,
-        groups: action.payload,
-        loading: false,
-      }),
-    );
-    builder.addCase(
-      fetchAllGroups.rejected,
-      (state: GroupsState): GroupsState => ({
-        ...state,
-        loading: false,
-      }),
-    );
+    builder.addCase(fetchAllGroups.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(fetchAllGroups.fulfilled, (state, action) => {
+      state.groups = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(fetchAllGroups.rejected, (state) => {
+      state.loading = false;
+    });
   },
 });
 

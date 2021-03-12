@@ -1,4 +1,4 @@
-export default [
+export const HEX_VALUES = [
   '0',
   '1',
   '2',
