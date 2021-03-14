@@ -1,15 +1,20 @@
 # User - Data Model
 
+## Firestore Document Path
+```
+/users/{username}
+```
+
 ## Definition
 ```
 {
-  username: string
+  email: string
 }
 ```
 
 ## Example
 ```json
 {
-  "username": "JohnDoe123"
+  "email": "john@doe.com"
 }
 ```
