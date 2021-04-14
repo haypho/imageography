@@ -43,9 +43,9 @@ service cloud.firestore {
 
       allow create: if isAuthenticated() && isCreateGroupValid()
 
-      allow update: if isAuthenticated() && isCreateGroupValid() && isTimestampValid(request.resource.data.tsUpdated)
+      allow update: if isAuthenticated() && isAuthor() && isCreateGroupValid() && isTimestampValid(request.resource.data.tsUpdated)
 
-      allow delete: if isAuthenticated() && request.auth.uid == request.resource.data.authorID
+      allow delete: if isAuthenticated() && isAuthor()
     }
 
     match /markers/{markerID} {
