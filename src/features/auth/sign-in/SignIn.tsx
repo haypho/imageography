@@ -16,10 +16,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  error: {
-    textAlign: 'center',
-    fontSize: 16,
-  },
 });
 
 const SignIn: React.FC = () => {
