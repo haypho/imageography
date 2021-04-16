@@ -4,7 +4,7 @@ import { useFormikContext } from 'formik';
 import { SignInFormValues } from './signIn.validation';
 import { displayNameCapitalized } from 'app.json';
 import { StyleSheet, TextInput as TextInputType, View } from 'react-native';
-import { MARGIN, PADDING } from '@app/constants';
+import { MARGIN } from '@app/constants';
 import SignInActionArea from './SignInActionArea';
 
 const styles = StyleSheet.create({
@@ -15,17 +15,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: 'center',
-  },
-  actionArea: {
-    flex: 1 / 3,
-    justifyContent: 'flex-end',
-    borderWidth: 1,
-  },
-  actionButton: {
-    paddingVertical: PADDING.medium,
-  },
-  actionButtonWrapper: {
-    marginVertical: MARGIN.small,
   },
   error: {
     textAlign: 'center',
