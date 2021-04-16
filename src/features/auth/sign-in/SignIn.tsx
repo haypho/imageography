@@ -1,15 +1,11 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Appbar, Button, HelperText, TextInput } from 'react-native-paper';
+import { Appbar, HelperText, TextInput } from 'react-native-paper';
 import { useFormikContext } from 'formik';
 import { SignInFormValues } from './signIn.validation';
-import { displayNameCapitalized } from '../../../../app.json';
-import {
-  Keyboard,
-  StyleSheet,
-  TextInput as TextInputType,
-  View,
-} from 'react-native';
-import { MARGIN, PADDING } from '../../../constants';
+import { displayNameCapitalized } from 'app.json';
+import { StyleSheet, TextInput as TextInputType, View } from 'react-native';
+import { MARGIN, PADDING } from '@app/constants';
+import SignInActionArea from './SignInActionArea';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,9 +19,13 @@ const styles = StyleSheet.create({
   actionArea: {
     flex: 1 / 3,
     justifyContent: 'flex-end',
+    borderWidth: 1,
   },
   actionButton: {
     paddingVertical: PADDING.medium,
+  },
+  actionButtonWrapper: {
+    marginVertical: MARGIN.small,
   },
   error: {
     textAlign: 'center',
@@ -40,9 +40,6 @@ const SignIn: React.FC = () => {
     values,
     errors,
     setFieldValue,
-    submitForm,
-    isSubmitting,
-    isValid,
     status,
     setStatus,
     validateField,
@@ -73,11 +70,6 @@ const SignIn: React.FC = () => {
     },
     [setFieldValue, status, setStatus, errors.password, validateField],
   );
-
-  const signIn = useCallback(() => {
-    Keyboard.dismiss();
-    submitForm();
-  }, [submitForm]);
 
   const toggleSecureEntry = useCallback(() => {
     setUseSecureEntry(!useSecureEntry);
@@ -124,16 +116,7 @@ const SignIn: React.FC = () => {
             {errors.password}
           </HelperText>
         </View>
-        <View style={styles.actionArea}>
-          <Button
-            onPress={signIn}
-            mode="contained"
-            contentStyle={styles.actionButton}
-            disabled={!isValid || isSubmitting}
-            loading={isSubmitting}>
-            Sign In
-          </Button>
-        </View>
+        <SignInActionArea />
       </View>
     </>
   );
