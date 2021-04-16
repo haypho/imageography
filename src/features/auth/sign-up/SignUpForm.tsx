@@ -7,6 +7,7 @@ const initialValues: SignUpFormValues = {
   email: '',
   password: '',
   confirmPassword: '',
+  username: '',
 };
 
 const SignUpForm: React.FC = () => {
@@ -16,6 +17,7 @@ const SignUpForm: React.FC = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      validateOnChange={false}
       onSubmit={onSubmit}>
       <SignUp />
     </Formik>
