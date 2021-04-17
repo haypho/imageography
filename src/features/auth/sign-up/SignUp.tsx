@@ -46,7 +46,6 @@ const SignUp: React.FC = () => {
     errors,
     submitForm,
   } = useFormikContext<SignUpFormValues>();
-  const emailRef = useRef<TextInputType>(null);
   const passwordRef = useRef<TextInputType>(null);
   const confirmPasswordRef = useRef<TextInputType>(null);
   const theme = useTheme();
@@ -66,22 +65,6 @@ const SignUp: React.FC = () => {
       <View style={styles.container}>
         <View style={styles.content}>
           <TextInput
-            label="Username"
-            placeholder="ImageWonder1"
-            value={values.username}
-            onChangeText={(username: string) =>
-              setFieldValue('username', username)
-            }
-            error={!!errors.username}
-            returnKeyType="next"
-            onSubmitEditing={() => emailRef.current?.focus()}
-            blurOnSubmit={false}
-          />
-          <HelperText type="error" visible={!!errors.username}>
-            {errors.username}
-          </HelperText>
-          <TextInput
-            ref={emailRef}
             label="Email"
             placeholder="example@email.com"
             value={values.email}

@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-import { UsernameRepository } from '@app/services/repositories/username.repository';
 
 export const validationSchema = Yup.object({
   email: Yup.string().email('Invalid Email Address').required('Required'),
@@ -10,15 +9,6 @@ export const validationSchema = Yup.object({
       'password',
       'Passwords do not match',
       (value: string | undefined, context) => value === context.parent.password,
-    ),
-  username: Yup.string()
-    .required('Required')
-    .test(
-      'username',
-      'Username already exists',
-      async (value: string | undefined) =>
-        value !== undefined &&
-        !(await UsernameRepository.usernameExists(value)),
     ),
 });
 

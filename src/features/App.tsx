@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { ActivityIndicator } from 'react-native-paper';
 import AuthStackNavigator from './navigation/auth/AuthStackNavigator';
 import { View, StyleSheet } from 'react-native';
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
 const App = () => {
   const [initializing, setInitializing] = useState<boolean>(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<FirebaseAuthTypes.User>();
 
   const onAuthStateChangedHandler = useCallback(
     (newUser) => {
@@ -43,11 +43,11 @@ const App = () => {
     );
   }
 
-  if (!user) {
-    return <AuthStackNavigator />;
+  if (user?.emailVerified) {
+    return <BottomTabNavigator />;
   }
 
-  return <BottomTabNavigator />;
+  return <AuthStackNavigator />;
 };
 
 export default App;

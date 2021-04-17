@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import { validationSchema, SignInFormValues } from './signIn.validation';
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import SignIn from './SignIn';
+import { useNavigation } from '@react-navigation/core';
 
 const initialValues: SignInFormValues = {
   email: '',
@@ -10,6 +11,21 @@ const initialValues: SignInFormValues = {
 };
 
 const SignInForm: React.FC = () => {
+  const navigation = useNavigation();
+  useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged(
+      (user: FirebaseAuthTypes.User | null) => {
+        if (user?.displayName) {
+          navigation.navigate('EmailVerification');
+        }
+        if (user) {
+          navigation.navigate('UsernameVerification');
+        }
+      },
+    );
+    return unsubscribe;
+  }, [navigation]);
+
   const onSubmit = useCallback(
     (
       values: SignInFormValues,
@@ -17,12 +33,18 @@ const SignInForm: React.FC = () => {
     ) => {
       auth()
         .signInWithEmailAndPassword(values.email, values.password)
-        .catch(() => {
-          formikHelpers.setStatus('invalid');
-          formikHelpers.setSubmitting(false);
-        });
+        .then((user) => {
+          if (user?.user.displayName) {
+            navigation.navigate('EmailVerification');
+          }
+          if (user) {
+            navigation.navigate('UsernameVerification');
+          }
+        })
+        .catch(() => formikHelpers.setStatus('invalid'))
+        .finally(() => formikHelpers.setSubmitting(false));
     },
-    [],
+    [navigation],
   );
 
   return (

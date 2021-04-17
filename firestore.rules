@@ -69,11 +69,13 @@ service cloud.firestore {
     }
     
     match /users/{userID} {
-      allow read, write: if isUserAuthenticated() && request.auth.uid == userID
+      allow read, write: if isAuthenticated() && request.auth.uid == userID
     }
 
     match /usernames/{username} {
       allow get: if true
+
+      allow write: if isAuthenticated()
     }
   }
 }
