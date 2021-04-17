@@ -5,6 +5,7 @@ import { View, StyleSheet } from 'react-native';
 import { Appbar, Button, HelperText, TextInput } from 'react-native-paper';
 import { UsernameVerificationFormValues } from './usernameVerification.validation';
 import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/core';
 
 const styles = StyleSheet.create({
   constainer: {
@@ -36,13 +37,17 @@ const UsernameVerfication: React.FC = () => {
     isSubmitting,
   } = useFormikContext<UsernameVerificationFormValues>();
 
-  const onPressDelete = useCallback(() => {
-    return auth().currentUser?.delete();
-  }, []);
+  const navigation = useNavigation();
+  const onPressBack = useCallback(() => {
+    auth()
+      .signOut()
+      .finally(() => navigation.navigate('SignIn'));
+  }, [navigation]);
 
   return (
     <>
       <Appbar.Header>
+        <Appbar.BackAction onPress={onPressBack} />
         <Appbar.Content title="Select Username" />
       </Appbar.Header>
       <View style={styles.constainer}>
@@ -69,14 +74,6 @@ const UsernameVerfication: React.FC = () => {
             loading={isSubmitting}
             disabled={isSubmitting}>
             Save
-          </Button>
-          <Button
-            style={styles.buttonWrapper}
-            contentStyle={styles.button}
-            color="red"
-            onPress={onPressDelete}
-            disabled={isSubmitting}>
-            Delete Account
           </Button>
         </View>
       </View>

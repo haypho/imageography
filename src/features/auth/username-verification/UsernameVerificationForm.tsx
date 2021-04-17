@@ -9,6 +9,7 @@ import {
   validationSchema,
 } from './usernameVerification.validation';
 import auth from '@react-native-firebase/auth';
+import { Keyboard } from 'react-native';
 
 const initialValues: UsernameVerificationFormValues = {
   username: '',
@@ -21,11 +22,16 @@ const UsernameVerficationForm: React.FC = () => {
     (
       values: UsernameVerificationFormValues,
       formikHelpers: FormikHelpers<UsernameVerificationFormValues>,
-    ) =>
+    ) => {
+      Keyboard.dismiss();
       UsernameService.saveUsername(values.username)
-        .then(() => navigation.navigate('EmailVerification'))
+        .then(() => {
+          auth().currentUser?.sendEmailVerification();
+          navigation.navigate('EmailVerification');
+        })
         .catch((errors) => formikHelpers.setErrors(errors))
-        .finally(() => formikHelpers.setSubmitting(false)),
+        .finally(() => formikHelpers.setSubmitting(false));
+    },
     [navigation],
   );
 

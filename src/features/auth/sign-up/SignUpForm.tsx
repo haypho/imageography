@@ -18,14 +18,10 @@ const SignUpForm: React.FC = () => {
       values: SignUpFormValues,
       formikHelpers: FormikHelpers<SignUpFormValues>,
     ) => {
-      try {
-        await SignUpService.signUp(values);
-        navigation.navigate('UsernameVerification');
-        console.log('Created User');
-      } catch (error) {
-        console.error('Failed to create user', error);
-        formikHelpers.setErrors(error);
-      }
+      SignUpService.signUp(values)
+        .then(() => navigation.navigate('UsernameVerification'))
+        .catch((errors) => formikHelpers.setErrors(errors))
+        .finally(() => formikHelpers.setSubmitting(false));
     },
     [navigation],
   );

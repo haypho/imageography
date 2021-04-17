@@ -45,6 +45,7 @@ const SignUp: React.FC = () => {
     setFieldValue,
     errors,
     submitForm,
+    isSubmitting,
   } = useFormikContext<SignUpFormValues>();
   const passwordRef = useRef<TextInputType>(null);
   const confirmPasswordRef = useRef<TextInputType>(null);
@@ -114,7 +115,9 @@ const SignUp: React.FC = () => {
             style={styles.buttonWrapper}
             contentStyle={styles.button}
             mode="contained"
-            onPress={onSubmit}>
+            onPress={onSubmit}
+            loading={isSubmitting}
+            disabled={isSubmitting}>
             Sign Up
           </Button>
         </View>
