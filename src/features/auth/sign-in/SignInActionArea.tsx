@@ -31,6 +31,10 @@ const SignInActionArea: React.FC = () => {
     submitForm();
   }, [submitForm]);
   const signUp = useCallback(() => navigation.navigate('SignUp'), [navigation]);
+  const onPressForgotPassword = useCallback(
+    () => navigation.navigate('ForgotPassword'),
+    [navigation],
+  );
 
   return (
     <View style={styles.container}>
@@ -49,6 +53,13 @@ const SignInActionArea: React.FC = () => {
         contentStyle={styles.button}
         style={styles.buttonWrapper}>
         Sign Up
+      </Button>
+      <Button
+        style={styles.buttonWrapper}
+        contentStyle={styles.button}
+        mode="text"
+        onPress={onPressForgotPassword}>
+        Forgot Password
       </Button>
     </View>
   );

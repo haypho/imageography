@@ -1,17 +1,33 @@
 import React, { useCallback } from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 import {
   ForgotPasswordFormValues,
   validationSchema,
 } from './forgotPassword.validation';
 import ForgotPassword from './ForgotPassword';
+import auth from '@react-native-firebase/auth';
+import { Keyboard } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
 
 const initialValues: ForgotPasswordFormValues = {
   email: '',
 };
 
 const ForgotPasswordForm: React.FC = () => {
-  const onSubmit = useCallback(() => console.log('submit forgot password'), []);
+  const navigation = useNavigation();
+  const onSubmit = useCallback(
+    (
+      values: ForgotPasswordFormValues,
+      formikHelpers: FormikHelpers<ForgotPasswordFormValues>,
+    ) => {
+      Keyboard.dismiss();
+      auth()
+        .sendPasswordResetEmail(values.email)
+        .then(() => navigation.navigate('SignIn'))
+        .finally(() => formikHelpers.setSubmitting(false));
+    },
+    [navigation],
+  );
 
   return (
     <Formik
