@@ -34,6 +34,7 @@ const SignIn: React.FC = () => {
     status,
     setStatus,
     validateField,
+    submitForm,
   } = useFormikContext<SignInFormValues>();
 
   const setEmail = useCallback(
@@ -119,6 +120,10 @@ const SignIn: React.FC = () => {
                 onPress={toggleSecureEntry}
               />
             }
+            onSubmitEditing={() => {
+              Keyboard.dismiss();
+              submitForm();
+            }}
           />
           <HelperText type="error" visible={!!errors.password}>
             {errors.password}
