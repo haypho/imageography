@@ -3,10 +3,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignInForm from '@app/features/auth/sign-in';
 import SignUpForm from '@app/features/auth/sign-up';
 import ForgotPasswordForm from '@app/features/auth/forgot-password';
-import EmailVerification from '@app/features/auth/email-verification';
 import UsernameVerficationForm from '@app/features/auth/username-verification/UsernameVerificationForm';
+import { AuthStackParamList } from './authStackParamList';
 
-const AuthStack = createStackNavigator();
+const AuthStack = createStackNavigator<AuthStackParamList>();
 
 const AuthStackNavigator: React.FC = () => {
   return (
@@ -17,10 +17,6 @@ const AuthStackNavigator: React.FC = () => {
       <AuthStack.Screen
         name="UsernameVerification"
         component={UsernameVerficationForm}
-      />
-      <AuthStack.Screen
-        name="EmailVerification"
-        component={EmailVerification}
       />
     </AuthStack.Navigator>
   );

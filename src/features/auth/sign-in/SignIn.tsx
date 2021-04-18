@@ -6,6 +6,7 @@ import { displayNameCapitalized } from 'app.json';
 import { StyleSheet, TextInput as TextInputType, View } from 'react-native';
 import { MARGIN } from '@app/constants';
 import SignInActionArea from './SignInActionArea';
+import SignInBanner from './SignInBanner';
 
 const styles = StyleSheet.create({
   container: {
@@ -60,11 +61,14 @@ const SignIn: React.FC = () => {
     setUseSecureEntry(!useSecureEntry);
   }, [setUseSecureEntry, useSecureEntry]);
 
+  const [actionAreaVisible, setActionAreaVisible] = useState<boolean>(true);
+
   return (
     <>
       <Appbar.Header>
         <Appbar.Content title={displayNameCapitalized} />
       </Appbar.Header>
+      <SignInBanner />
       <View style={styles.container}>
         <View style={styles.content}>
           <TextInput
@@ -78,6 +82,7 @@ const SignIn: React.FC = () => {
             returnKeyType="next"
             onSubmitEditing={(): void => passwordRef.current?.focus()}
             blurOnSubmit={false}
+            onFocus={() => setActionAreaVisible(false)}
           />
           <HelperText type="error" visible={!!errors.email}>
             {errors.email}
@@ -96,12 +101,13 @@ const SignIn: React.FC = () => {
                 onPress={toggleSecureEntry}
               />
             }
+            onSubmitEditing={() => setActionAreaVisible(true)}
           />
           <HelperText type="error" visible={!!errors.password}>
             {errors.password}
           </HelperText>
         </View>
-        <SignInActionArea />
+        {actionAreaVisible && <SignInActionArea />}
       </View>
     </>
   );

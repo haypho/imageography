@@ -1,9 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { ActivityIndicator } from 'react-native-paper';
 import AuthStackNavigator from './navigation/auth/AuthStackNavigator';
 import { View, StyleSheet } from 'react-native';
 import BottomTabNavigator from './navigation/tabs/BottomTabNavigator';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  initializingSelector,
+  userSelector,
+} from '@app/store/selectors/signIn.selectors';
+import { setInitializing, setUser } from '@app/store/slices/signIn.slice';
 
 declare const global: { HermesInternal: null | {} };
 
@@ -16,23 +22,17 @@ const styles = StyleSheet.create({
 });
 
 const App = () => {
-  const [initializing, setInitializing] = useState<boolean>(true);
-  const [user, setUser] = useState<FirebaseAuthTypes.User>();
-
-  const onAuthStateChangedHandler = useCallback(
-    (newUser) => {
-      setUser(newUser);
-      if (initializing) {
-        setInitializing(false);
-      }
-    },
-    [setUser, setInitializing, initializing],
-  );
+  const dispatch = useDispatch();
+  const user: FirebaseAuthTypes.User | null = useSelector(userSelector);
+  const initializing: boolean = useSelector(initializingSelector);
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChangedHandler);
+    const subscriber = auth().onAuthStateChanged((newUser) => {
+      dispatch(setUser(newUser));
+      dispatch(setInitializing(false));
+    });
     return subscriber;
-  }, [onAuthStateChangedHandler]);
+  }, [dispatch]);
 
   if (initializing) {
     // TODO: Change to splash screen

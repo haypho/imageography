@@ -1,4 +1,4 @@
-import { createSlice, Slice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { Group } from '../../models/group';
 import { fetchAllGroups } from '../thunks/groups.thunks';
 
@@ -12,7 +12,7 @@ const initialState: GroupsState = {
   loading: false,
 };
 
-const slice: Slice<GroupsState, {}, 'groupsSlice'> = createSlice({
+const slice = createSlice({
   initialState,
   name: 'groupsSlice',
   reducers: {},

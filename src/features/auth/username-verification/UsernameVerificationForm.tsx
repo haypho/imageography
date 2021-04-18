@@ -10,6 +10,7 @@ import {
 } from './usernameVerification.validation';
 import auth from '@react-native-firebase/auth';
 import { Keyboard } from 'react-native';
+import { emailVerificationRouteParams } from '../emailVerificationRouteParams';
 
 const initialValues: UsernameVerificationFormValues = {
   username: '',
@@ -27,7 +28,7 @@ const UsernameVerficationForm: React.FC = () => {
       UsernameService.saveUsername(values.username)
         .then(() => {
           auth().currentUser?.sendEmailVerification();
-          navigation.navigate('EmailVerification');
+          navigation.navigate('SignIn', emailVerificationRouteParams);
         })
         .catch((errors) => formikHelpers.setErrors(errors))
         .finally(() => formikHelpers.setSubmitting(false));

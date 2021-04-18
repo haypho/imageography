@@ -1,16 +1,12 @@
 import { useNavigation } from '@react-navigation/core';
 import React, { useCallback } from 'react';
 import { Button } from 'react-native-paper';
-import { View, StyleSheet, Keyboard } from 'react-native';
+import { StyleSheet, Keyboard } from 'react-native';
 import { useFormikContext } from 'formik';
 import { SignInFormValues } from './signIn.validation';
 import { MARGIN, PADDING } from '@app/constants';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1 / 3,
-    justifyContent: 'flex-end',
-  },
   buttonWrapper: {
     marginVertical: MARGIN.small,
   },
@@ -37,7 +33,7 @@ const SignInActionArea: React.FC = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <>
       <Button
         onPress={signIn}
         mode="contained"
@@ -61,7 +57,7 @@ const SignInActionArea: React.FC = () => {
         onPress={onPressForgotPassword}>
         Forgot Password
       </Button>
-    </View>
+    </>
   );
 };
 
