@@ -1,9 +1,14 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Appbar, HelperText, TextInput } from 'react-native-paper';
 import { useFormikContext } from 'formik';
 import { SignInFormValues } from './signIn.validation';
 import { displayNameCapitalized } from 'app.json';
-import { StyleSheet, TextInput as TextInputType, View } from 'react-native';
+import {
+  StyleSheet,
+  TextInput as TextInputType,
+  View,
+  Keyboard,
+} from 'react-native';
 import { MARGIN } from '@app/constants';
 import SignInActionArea from './SignInActionArea';
 import SignInBanner from './SignInBanner';
@@ -63,6 +68,20 @@ const SignIn: React.FC = () => {
 
   const [actionAreaVisible, setActionAreaVisible] = useState<boolean>(true);
 
+  useEffect(() => {
+    const keyboardShowSub = Keyboard.addListener('keyboardDidShow', () => {
+      setActionAreaVisible(false);
+    });
+    const keyboardHideSub = Keyboard.addListener('keyboardDidHide', () => {
+      setActionAreaVisible(true);
+    });
+
+    return () => {
+      Keyboard.removeSubscription(keyboardShowSub);
+      Keyboard.removeSubscription(keyboardHideSub);
+    };
+  }, [setActionAreaVisible]);
+
   return (
     <>
       <Appbar.Header>
@@ -82,7 +101,6 @@ const SignIn: React.FC = () => {
             returnKeyType="next"
             onSubmitEditing={(): void => passwordRef.current?.focus()}
             blurOnSubmit={false}
-            onFocus={() => setActionAreaVisible(false)}
           />
           <HelperText type="error" visible={!!errors.email}>
             {errors.email}
@@ -101,7 +119,6 @@ const SignIn: React.FC = () => {
                 onPress={toggleSecureEntry}
               />
             }
-            onSubmitEditing={() => setActionAreaVisible(true)}
           />
           <HelperText type="error" visible={!!errors.password}>
             {errors.password}
