@@ -1,47 +1,38 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { FirestoreCollection } from '@app/constants';
 import { FirebaseSource, Group } from '@app/models';
 import { AddGroupFormValues } from '@app/features/groups/add-group/addGroup.validation';
 
 export class GroupRepository {
-  public static async getAll(
-    source: FirebaseSource = 'cache',
-  ): Promise<Group[]> {
-    const user = auth().currentUser;
-    if (user) {
+  public static async getAll(source: FirebaseSource = 'cache'): Promise<Array<Group>> {
+    return new Promise((resolve, reject) => {
+      const user: FirebaseAuthTypes.User | null = auth().currentUser;
+      if (!user) {
+        return reject('User must be signed in.');
+      }
+
       return firestore()
         .collection(FirestoreCollection.Groups)
         .where('authorID', '==', user.uid)
         .get({ source })
         .then((snapshot) => {
           if (snapshot.empty) {
-            return [];
+            return resolve([]);
           }
 
-          return snapshot.docs
-            .reduce(
-              (documents: Array<FirebaseFirestoreTypes.DocumentData>, doc) => {
-                if (doc.exists) {
-                  const data = doc.data();
-                  if (data) {
-                    documents.push(data);
-                  }
-                }
-                return documents;
-              },
-              [],
-            )
-            .map(GroupRepository.convertFirestoreDocToGroup);
-        });
-    }
-    return [];
+          const groups: Array<Group> = snapshot.docs
+            .map(GroupRepository.convertFirestoreDocToGroup)
+            .filter((group: Group | undefined): boolean => group !== undefined) as Array<Group>;
+
+          return resolve(groups);
+        })
+        .catch(reject);
+    });
   }
 
-  public static add(
-    group: AddGroupFormValues,
-  ): Promise<FirebaseFirestoreTypes.DocumentReference> {
+  public static add(group: AddGroupFormValues): Promise<FirebaseFirestoreTypes.DocumentReference> {
     return new Promise((resolve, reject) => {
       const user = auth().currentUser;
       if (user) {
@@ -61,46 +52,42 @@ export class GroupRepository {
     });
   }
 
-  public static getByReference(
-    ref: FirebaseFirestoreTypes.DocumentReference,
-  ): Promise<Group> {
+  public static getByReference(ref: FirebaseFirestoreTypes.DocumentReference): Promise<Group> {
     return new Promise((resolve, reject) => {
       return ref
         .get()
         .then((snapshot) => {
           if (snapshot.exists) {
-            const data = snapshot.data();
-            if (data) {
-              resolve(GroupRepository.convertFirestoreDocToGroup(data));
+            const group: Group | undefined = GroupRepository.convertFirestoreDocToGroup(snapshot);
+            if (group) {
+              return resolve(group);
             }
           }
-          reject('Group does not exist');
+          return reject('Group does not exist');
         })
         .catch(reject);
     });
   }
 
-  private static convertFirestoreDocToGroup(
-    doc: FirebaseFirestoreTypes.DocumentData,
-  ): Group {
-    const {
-      author,
-      authorID,
-      color,
-      markers,
-      name,
-      tsCreated,
-      tsUpdated,
-    } = doc;
+  private static convertFirestoreDocToGroup(snapshot: FirebaseFirestoreTypes.DocumentSnapshot): Group | undefined {
+    if (!snapshot.exists) {
+      return undefined;
+    }
+
+    const data: FirebaseFirestoreTypes.DocumentData | undefined = snapshot.data();
+    if (!data) {
+      return undefined;
+    }
+
     return {
-      id: doc.id,
-      author,
-      authorId: authorID,
-      color,
-      markers,
-      name,
-      tsCreated: new Date(tsCreated.seconds * 1000),
-      tsUpdated: tsUpdated ? new Date(tsUpdated.seconds * 1000) : undefined,
+      id: snapshot.id,
+      author: data.author,
+      authorId: data.authorID,
+      color: data.color,
+      markers: data.markers,
+      name: data.name,
+      tsCreated: new Date(data.tsCreated.seconds * 1000),
+      tsUpdated: data.tsUpdated ? new Date(data.tsUpdated.seconds * 1000) : undefined,
     };
   }
 }
