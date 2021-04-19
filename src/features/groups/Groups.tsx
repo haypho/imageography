@@ -64,6 +64,7 @@ const Groups: React.FC = () => {
       />
       <FlatList
         data={filterGroups()}
+        keyExtractor={(group: Group) => group.id}
         refreshing={groupsLoading}
         onRefresh={onRefresh}
         renderItem={GroupListItem}
