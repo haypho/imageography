@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Groups from '../../groups';
-import AddGroupForm from '../../groups/add-group';
+import Groups from '@app/features/groups';
+import AddGroupForm from '@app/features/groups/add-group';
 
 const GroupsStack = createStackNavigator();
 
