@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { Group } from '../../models/group';
-import { fetchAllGroups } from '../thunks/groups.thunks';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Group } from '@app/models/group';
+import { fetchAllGroups } from '@app/store/thunks/groups.thunks';
 
 export interface GroupsState {
   groups: Group[];
@@ -15,7 +15,11 @@ const initialState: GroupsState = {
 const slice = createSlice({
   initialState,
   name: 'groupsSlice',
-  reducers: {},
+  reducers: {
+    addGroup(state, action: PayloadAction<Group>) {
+      state.groups.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchAllGroups.pending, (state) => {
       state.loading = true;
@@ -33,3 +37,4 @@ const slice = createSlice({
 });
 
 export const reducer = slice.reducer;
+export const { addGroup } = slice.actions;

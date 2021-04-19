@@ -84,7 +84,8 @@ const AddGroup: React.FC = () => {
             mode="contained"
             style={styles.actionButton}
             contentStyle={styles.actionButtonContent}
-            disabled={isSubmitting}>
+            disabled={isSubmitting}
+            loading={isSubmitting}>
             Add
           </Button>
           <Button

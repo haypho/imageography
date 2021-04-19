@@ -1,9 +1,9 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { Group } from '../../models/group';
-import { FirestoreCollection } from '../../constants';
-import { FirebaseSource } from '../../interfaces/firebaseSource';
+import { FirestoreCollection } from '@app/constants';
+import { FirebaseSource, Group } from '@app/models';
+import { AddGroupFormValues } from '@app/features/groups/add-group/addGroup.validation';
 
 export class GroupRepository {
   public static async getAll(
@@ -15,17 +15,73 @@ export class GroupRepository {
         .collection(FirestoreCollection.Groups)
         .where('authorID', '==', user.uid)
         .get({ source })
-        .then((snapshot) =>
-          snapshot.empty
-            ? []
-            : snapshot.docs.map(GroupRepository.convertFirestoreDocToGroup),
-        );
+        .then((snapshot) => {
+          if (snapshot.empty) {
+            return [];
+          }
+
+          return snapshot.docs
+            .reduce(
+              (documents: Array<FirebaseFirestoreTypes.DocumentData>, doc) => {
+                if (doc.exists) {
+                  const data = doc.data();
+                  if (data) {
+                    documents.push(data);
+                  }
+                }
+                return documents;
+              },
+              [],
+            )
+            .map(GroupRepository.convertFirestoreDocToGroup);
+        });
     }
     return [];
   }
 
+  public static add(
+    group: AddGroupFormValues,
+  ): Promise<FirebaseFirestoreTypes.DocumentReference> {
+    return new Promise((resolve, reject) => {
+      const user = auth().currentUser;
+      if (user) {
+        return firestore()
+          .collection(FirestoreCollection.Groups)
+          .add({
+            author: user.displayName,
+            authorID: user.uid,
+            markers: [],
+            tsCreated: firestore.Timestamp.now(),
+            ...group,
+          })
+          .then(resolve)
+          .catch(reject);
+      }
+      return reject('User must be signed in to add a group.');
+    });
+  }
+
+  public static getByReference(
+    ref: FirebaseFirestoreTypes.DocumentReference,
+  ): Promise<Group> {
+    return new Promise((resolve, reject) => {
+      return ref
+        .get()
+        .then((snapshot) => {
+          if (snapshot.exists) {
+            const data = snapshot.data();
+            if (data) {
+              resolve(GroupRepository.convertFirestoreDocToGroup(data));
+            }
+          }
+          reject('Group does not exist');
+        })
+        .catch(reject);
+    });
+  }
+
   private static convertFirestoreDocToGroup(
-    doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
+    doc: FirebaseFirestoreTypes.DocumentData,
   ): Group {
     const {
       author,
@@ -35,7 +91,7 @@ export class GroupRepository {
       name,
       tsCreated,
       tsUpdated,
-    } = doc.data();
+    } = doc;
     return {
       id: doc.id,
       author,
