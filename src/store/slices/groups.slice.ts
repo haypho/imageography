@@ -6,7 +6,7 @@ import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 export interface GroupsState {
   groups: Group[];
   fetching: boolean;
-  firestoreOffset?: FirebaseFirestoreTypes.QueryDocumentSnapshot;
+  firestoreOffset?: FirebaseFirestoreTypes.QueryDocumentSnapshot | null;
   error: boolean;
 }
 
@@ -22,6 +22,7 @@ const slice = createSlice({
   reducers: {
     addGroup(state, action: PayloadAction<Group>) {
       state.groups.push(action.payload);
+      state.groups = state.groups.sort((a, b) => a.name.localeCompare(b.name));
     },
   },
   extraReducers: (builder) => {
@@ -30,15 +31,13 @@ const slice = createSlice({
     });
 
     builder.addCase(fetchGroups.fulfilled, (state, action) => {
-      console.log('state', action.payload.data);
-      state.groups = action.payload.data;
-      state.firestoreOffset = action.payload.offset;
+      state.groups.push(...action.payload.data);
+      state.firestoreOffset = action.payload.offset ?? null;
       state.fetching = false;
     });
 
-    builder.addCase(fetchGroups.rejected, (state, action) => {
+    builder.addCase(fetchGroups.rejected, (state) => {
       state.fetching = false;
-      console.log(action.payload);
       state.error = true;
     });
   },

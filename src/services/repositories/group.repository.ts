@@ -55,21 +55,17 @@ export class GroupRepository {
         .limit(limit)
         .get()
         .then((snapshot) => {
-          console.log('snapshot came back');
           if (snapshot.empty) {
             return resolve({ data: [] });
           }
-          const newOffset: FirebaseFirestoreTypes.QueryDocumentSnapshot = snapshot.docs[snapshot.docs.length - 1];
+          const newOffset: FirebaseFirestoreTypes.QueryDocumentSnapshot | null =
+            snapshot.docs.length < limit ? null : snapshot.docs[snapshot.docs.length - 1];
           const groups: Array<Group> = snapshot.docs
             .map(this.convertFirestoreDocToGroup)
             .filter((group: Group | undefined) => group !== undefined) as Array<Group>;
-          console.log('repo', groups);
           return resolve({ data: groups, offset: newOffset });
         })
-        .catch((error) => {
-          console.error(error);
-          return reject(error);
-        });
+        .catch(reject);
     });
   }
 

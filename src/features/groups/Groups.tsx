@@ -34,6 +34,7 @@ const Groups: React.FC = () => {
   }, [dispatch]);
 
   const onRefresh = useCallback(() => dispatch(fetchGroups({ source: 'server', limit: 10 })), [dispatch]);
+  const fetchMoreGroups = useCallback(() => dispatch(fetchGroups()), [dispatch]);
 
   const filterGroups = useCallback(
     (): Group[] =>
@@ -58,6 +59,8 @@ const Groups: React.FC = () => {
         renderItem={GroupListItem}
         ItemSeparatorComponent={Divider}
         ListEmptyComponent={() => <GroupListEmptyComponent isFiltered={!!searchQuery} />}
+        onEndReached={fetchMoreGroups}
+        onEndReachedThreshold={0.25}
       />
       <FAB style={styles.fab} icon="plus" onPress={() => navigation.navigate('addGroup')} />
     </>

@@ -4,10 +4,10 @@ import { FirebaseSource } from './firebaseSource';
 export interface FirestorePaginatedQuery {
   source: FirebaseSource;
   limit: number;
-  offset?: FirebaseFirestoreTypes.QueryDocumentSnapshot;
+  offset?: FirebaseFirestoreTypes.QueryDocumentSnapshot | null;
 }
 
 export interface FirestorePaginatedResponse<T> {
   data: T;
-  offset?: FirebaseFirestoreTypes.QueryDocumentSnapshot;
+  offset?: FirebaseFirestoreTypes.QueryDocumentSnapshot | null;
 }

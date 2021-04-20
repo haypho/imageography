@@ -9,12 +9,12 @@ export const fetchGroups = createAsyncThunk<
   { state: RootState }
 >(
   'fetchGroups',
-  async (query = { source: 'cache', limit: 10 }, api): Promise<FirestorePaginatedResponse<Array<Group>>> => {
+  (query = { source: 'cache', limit: 10 }, api): Promise<FirestorePaginatedResponse<Array<Group>>> => {
     const { source, limit } = query;
     const offset = query.offset ?? api.getState().groups.firestoreOffset;
     return GroupRepository.fetchGroups({ source, limit, offset });
   },
   {
-    condition: (_, api) => !api.getState().groups.fetching,
+    condition: (_, api) => !api.getState().groups.fetching && api.getState().groups.firestoreOffset !== null,
   },
 );
