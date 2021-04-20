@@ -1,15 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Group } from '@app/models/group';
-import { fetchAllGroups } from '@app/store/thunks/groups.thunks';
+import { fetchGroups } from '@app/store/thunks/groups.thunks';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 export interface GroupsState {
   groups: Group[];
-  loading: boolean;
+  fetching: boolean;
+  firestoreOffset?: FirebaseFirestoreTypes.QueryDocumentSnapshot;
+  error: boolean;
 }
 
 const initialState: GroupsState = {
   groups: [],
-  loading: false,
+  fetching: false,
+  error: false,
 };
 
 const slice = createSlice({
@@ -21,17 +25,21 @@ const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchAllGroups.pending, (state) => {
-      state.loading = true;
+    builder.addCase(fetchGroups.pending, (state) => {
+      state.fetching = true;
     });
 
-    builder.addCase(fetchAllGroups.fulfilled, (state, action) => {
-      state.groups = action.payload;
-      state.loading = false;
+    builder.addCase(fetchGroups.fulfilled, (state, action) => {
+      console.log('state', action.payload.data);
+      state.groups = action.payload.data;
+      state.firestoreOffset = action.payload.offset;
+      state.fetching = false;
     });
 
-    builder.addCase(fetchAllGroups.rejected, (state) => {
-      state.loading = false;
+    builder.addCase(fetchGroups.rejected, (state, action) => {
+      state.fetching = false;
+      console.log(action.payload);
+      state.error = true;
     });
   },
 });

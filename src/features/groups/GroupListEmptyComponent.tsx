@@ -14,12 +14,8 @@ export interface GroupListEmptyComponentProps {
   isFiltered?: boolean;
 }
 
-const GroupListEmptyComponent: React.FC<GroupListEmptyComponentProps> = ({
-  isFiltered,
-}) => {
-  const message = isFiltered
-    ? 'No Groups Found'
-    : 'No groups yet!\nAdd a group to get started!';
+const GroupListEmptyComponent: React.FC<GroupListEmptyComponentProps> = ({ isFiltered }) => {
+  const message = isFiltered ? 'No Groups Found' : 'No groups yet!\nAdd a group to get started!';
   return (
     <Title style={styles.title} numberOfLines={2}>
       {message}

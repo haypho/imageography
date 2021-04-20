@@ -1,15 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Appbar, Divider, Searchbar, FAB } from 'react-native-paper';
-import { Group } from '../../models/group';
+import { Group } from '@app/models/group';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  groupsLoadingSelector,
-  groupsSelector,
-} from '../../store/selectors/groups.selectors';
-import { fetchAllGroups } from '../../store/thunks/groups.thunks';
+import { groupsFetchingSelector, groupsSelector } from '@app/store/selectors/groups.selectors';
+import { fetchGroups } from '@app/store/thunks/groups.thunks';
 import { FlatList, StyleSheet } from 'react-native';
 import GroupListItem from './GroupListItem';
-import { MARGIN } from '../../constants';
+import { MARGIN } from '@app/constants';
 import { useNavigation } from '@react-navigation/native';
 import GroupListEmptyComponent from './GroupListEmptyComponent';
 
@@ -30,54 +27,39 @@ const Groups: React.FC = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const groups: Group[] = useSelector(groupsSelector);
-  const groupsLoading: boolean = useSelector(groupsLoadingSelector);
+  const groupsFetching: boolean = useSelector(groupsFetchingSelector);
 
   useEffect(() => {
-    dispatch(fetchAllGroups());
+    dispatch(fetchGroups());
   }, [dispatch]);
 
-  const onRefresh = useCallback(() => dispatch(fetchAllGroups('server')), [
-    dispatch,
-  ]);
+  const onRefresh = useCallback(() => dispatch(fetchGroups({ source: 'server', limit: 10 })), [dispatch]);
 
-  const filterGroups = useCallback((): Group[] => {
-    return groups.filter((group: Group): boolean => {
-      if (searchQuery) {
-        return group.name
-          .toLocaleLowerCase()
-          .includes(searchQuery.toLocaleLowerCase());
-      }
-      return true;
-    });
-  }, [groups, searchQuery]);
+  const filterGroups = useCallback(
+    (): Group[] =>
+      groups.filter(
+        (group: Group): boolean =>
+          !searchQuery || group.name.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase()),
+      ),
+    [groups, searchQuery],
+  );
 
   return (
     <>
       <Appbar.Header>
         <Appbar.Content title="Groups" />
       </Appbar.Header>
-      <Searchbar
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        placeholder="Search"
-        style={styles.searchbar}
-      />
+      <Searchbar value={searchQuery} onChangeText={setSearchQuery} placeholder="Search" style={styles.searchbar} />
       <FlatList
         data={filterGroups()}
         keyExtractor={(group: Group) => group.id}
-        refreshing={groupsLoading}
+        refreshing={groupsFetching}
         onRefresh={onRefresh}
         renderItem={GroupListItem}
         ItemSeparatorComponent={Divider}
-        ListEmptyComponent={() => (
-          <GroupListEmptyComponent isFiltered={!!searchQuery} />
-        )}
+        ListEmptyComponent={() => <GroupListEmptyComponent isFiltered={!!searchQuery} />}
       />
-      <FAB
-        style={styles.fab}
-        icon="plus"
-        onPress={() => navigation.navigate('addGroup')}
-      />
+      <FAB style={styles.fab} icon="plus" onPress={() => navigation.navigate('addGroup')} />
     </>
   );
 };

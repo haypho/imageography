@@ -2,7 +2,7 @@ import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { FirestoreCollection } from '@app/constants';
-import { FirebaseSource, Group } from '@app/models';
+import { FirebaseSource, FirestorePaginatedQuery, FirestorePaginatedResponse, Group } from '@app/models';
 import { AddGroupFormValues } from '@app/features/groups/add-group/addGroup.validation';
 
 export class GroupRepository {
@@ -29,6 +29,47 @@ export class GroupRepository {
           return resolve(groups);
         })
         .catch(reject);
+    });
+  }
+
+  public static fetchGroups({
+    limit,
+    offset,
+  }: FirestorePaginatedQuery): Promise<FirestorePaginatedResponse<Array<Group>>> {
+    return new Promise((resolve, reject) => {
+      const user: FirebaseAuthTypes.User | null = auth().currentUser;
+      if (!user) {
+        return reject('User must be signed in.');
+      }
+
+      let groupsRef = firestore()
+        .collection(FirestoreCollection.Groups)
+        .where('authorID', '==', user.uid)
+        .orderBy('name');
+
+      if (offset) {
+        groupsRef = groupsRef.startAfter(offset);
+      }
+
+      return groupsRef
+        .limit(limit)
+        .get()
+        .then((snapshot) => {
+          console.log('snapshot came back');
+          if (snapshot.empty) {
+            return resolve({ data: [] });
+          }
+          const newOffset: FirebaseFirestoreTypes.QueryDocumentSnapshot = snapshot.docs[snapshot.docs.length - 1];
+          const groups: Array<Group> = snapshot.docs
+            .map(this.convertFirestoreDocToGroup)
+            .filter((group: Group | undefined) => group !== undefined) as Array<Group>;
+          console.log('repo', groups);
+          return resolve({ data: groups, offset: newOffset });
+        })
+        .catch((error) => {
+          console.error(error);
+          return reject(error);
+        });
     });
   }
 

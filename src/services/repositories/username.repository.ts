@@ -6,10 +6,7 @@ import auth from '@react-native-firebase/auth';
 export class UsernameRepository {
   public static async usernameExists(username: string): Promise<boolean> {
     try {
-      const snapshot = await firestore()
-        .collection(FirestoreCollection.Usernames)
-        .doc(username.toLowerCase())
-        .get();
+      const snapshot = await firestore().collection(FirestoreCollection.Usernames).doc(username.toLowerCase()).get();
       return snapshot.exists;
     } catch (e) {
       return true;

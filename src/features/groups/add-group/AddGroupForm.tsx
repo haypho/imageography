@@ -19,10 +19,7 @@ const AddGroupForm: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<GroupStackParamList>>();
   const dispatch = useDispatch();
   const onSubmit = useCallback(
-    (
-      values: AddGroupFormValues,
-      formikHelpers: FormikHelpers<AddGroupFormValues>,
-    ) => {
+    (values: AddGroupFormValues, formikHelpers: FormikHelpers<AddGroupFormValues>) => {
       GroupRepository.add(values)
         .then((groupDocRef) => {
           GroupRepository.getByReference(groupDocRef)

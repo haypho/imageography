@@ -1,18 +1,20 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Group } from '../../models/group';
-import { RootState } from '../store';
-import { GroupRepository } from '../../services/repositories/group.repository';
+import { Group, FirestorePaginatedResponse, FirestorePaginatedQuery } from '@app/models';
+import { RootState } from '@app/store';
+import { GroupRepository } from '@app/services/repositories/group.repository';
 
-export const fetchAllGroups = createAsyncThunk<
-  Group[],
-  'cache' | 'server' | undefined,
+export const fetchGroups = createAsyncThunk<
+  FirestorePaginatedResponse<Array<Group>>,
+  FirestorePaginatedQuery | undefined,
   { state: RootState }
 >(
-  'fetchAllGroups',
-  async (source = 'cache'): Promise<Group[]> => {
-    return GroupRepository.getAll(source);
+  'fetchGroups',
+  async (query = { source: 'cache', limit: 10 }, api): Promise<FirestorePaginatedResponse<Array<Group>>> => {
+    const { source, limit } = query;
+    const offset = query.offset ?? api.getState().groups.firestoreOffset;
+    return GroupRepository.fetchGroups({ source, limit, offset });
   },
   {
-    condition: (_, api) => !api.getState().groups.loading,
+    condition: (_, api) => !api.getState().groups.fetching,
   },
 );

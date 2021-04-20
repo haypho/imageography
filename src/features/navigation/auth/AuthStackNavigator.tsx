@@ -14,10 +14,7 @@ const AuthStackNavigator: React.FC = () => {
       <AuthStack.Screen name="SignIn" component={SignInForm} />
       <AuthStack.Screen name="SignUp" component={SignUpForm} />
       <AuthStack.Screen name="ForgotPassword" component={ForgotPasswordForm} />
-      <AuthStack.Screen
-        name="UsernameVerification"
-        component={UsernameVerficationForm}
-      />
+      <AuthStack.Screen name="UsernameVerification" component={UsernameVerficationForm} />
     </AuthStack.Navigator>
   );
 };

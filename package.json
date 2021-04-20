@@ -8,6 +8,8 @@
     "check:format": "prettier . --check",
     "check:lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "check:type": "tsc --noEmit",
+    "deploy": "firebase deploy",
+    "deploy:firestore:indexes": "firebase deploy --only firestore:indexes",
     "deploy:firestore:rules": "firebase deploy --only firestore:rules",
     "fix:all": "yarn fix:format && yarn fix:lint",
     "fix:format": "prettier . --write",

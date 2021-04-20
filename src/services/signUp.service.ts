@@ -9,9 +9,7 @@ export class SignUpService {
   }: {
     email: string;
     password: string;
-  }): Promise<
-    FirebaseAuthTypes.UserCredential | FormikErrors<SignUpFormValues>
-  > {
+  }): Promise<FirebaseAuthTypes.UserCredential | FormikErrors<SignUpFormValues>> {
     return auth()
       .createUserWithEmailAndPassword(email, password)
       .catch((error) => {

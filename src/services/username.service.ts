@@ -5,25 +5,19 @@ import { FormikErrors } from 'formik';
 import { UsernameVerificationFormValues } from '@app/features/auth/username-verification/usernameVerification.validation';
 
 export class UsernameService {
-  public static async saveUsername(
-    username: string,
-  ): Promise<void | FormikErrors<UsernameVerificationFormValues>> {
+  public static async saveUsername(username: string): Promise<void | FormikErrors<UsernameVerificationFormValues>> {
     try {
       const user: FirebaseAuthTypes.User | null = auth().currentUser;
       if (!user) {
         throw 'You must be signed in to select a username.';
       }
 
-      const usernameExists: boolean = await UsernameRepository.usernameExists(
-        username,
-      );
+      const usernameExists: boolean = await UsernameRepository.usernameExists(username);
       if (usernameExists) {
         throw 'Username already exists.';
       }
 
-      const addedUsernameSuccessfully: boolean = await UsernameRepository.addUsername(
-        username,
-      );
+      const addedUsernameSuccessfully: boolean = await UsernameRepository.addUsername(username);
       if (!addedUsernameSuccessfully) {
         throw 'Unable to add username at this time. Please try again.';
       }
@@ -34,9 +28,7 @@ export class UsernameService {
     }
   }
 
-  private static formatError(
-    error: any,
-  ): FormikErrors<UsernameVerificationFormValues> {
+  private static formatError(error: any): FormikErrors<UsernameVerificationFormValues> {
     if (typeof error === 'string') {
       return { username: error };
     }

@@ -5,10 +5,7 @@ import AuthStackNavigator from './navigation/auth/AuthStackNavigator';
 import { View, StyleSheet } from 'react-native';
 import BottomTabNavigator from './navigation/tabs/BottomTabNavigator';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  initializingSelector,
-  userSelector,
-} from '@app/store/selectors/signIn.selectors';
+import { initializingSelector, userSelector } from '@app/store/selectors/signIn.selectors';
 import { setInitializing, setUser } from '@app/store/slices/signIn.slice';
 
 declare const global: { HermesInternal: null | {} };

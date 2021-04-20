@@ -15,10 +15,7 @@ const slice = createSlice({
   initialState,
   name: 'signInSlice',
   reducers: {
-    setUser(
-      state: SignInState,
-      action: PayloadAction<FirebaseAuthTypes.User | null>,
-    ) {
+    setUser(state: SignInState, action: PayloadAction<FirebaseAuthTypes.User | null>) {
       state.user = action.payload;
     },
     setInitializing(state: SignInState, action: PayloadAction<boolean>) {

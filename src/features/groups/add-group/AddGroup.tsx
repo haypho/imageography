@@ -29,23 +29,11 @@ const styles = StyleSheet.create({
 
 const AddGroup: React.FC = () => {
   const navigation = useNavigation();
-  const {
-    values,
-    setFieldValue,
-    errors,
-    submitForm,
-    isSubmitting,
-  } = useFormikContext<AddGroupFormValues>();
+  const { values, setFieldValue, errors, submitForm, isSubmitting } = useFormikContext<AddGroupFormValues>();
 
-  const setGroupName = useCallback(
-    (name: string) => setFieldValue('name', name),
-    [setFieldValue],
-  );
+  const setGroupName = useCallback((name: string) => setFieldValue('name', name), [setFieldValue]);
 
-  const setGroupColor = useCallback(
-    (color: string) => setFieldValue('color', color),
-    [setFieldValue],
-  );
+  const setGroupColor = useCallback((color: string) => setFieldValue('color', color), [setFieldValue]);
 
   return (
     <>
