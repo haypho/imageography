@@ -63,7 +63,7 @@ const AddGroup: React.FC = () => {
           <HelperText type="error" visible={!!errors.color}>
             {errors.color}
           </HelperText>
-          <ColorPicker />
+          <ColorPicker onChange={(hex: string) => setGroupColor(hex)} />
         </View>
         <View style={styles.actionArea}>
           <Button

@@ -8,9 +8,11 @@ import Animated, {
   useAnimatedGestureHandler,
   interpolate,
   Extrapolate,
+  runOnJS,
 } from 'react-native-reanimated';
 import { MARGIN } from '@app/constants';
 import ColorSlider from '@app/components/color-slider';
+import { useTheme } from '@react-navigation/native';
 
 type AnimatedContext = {
   startX: number;
@@ -19,16 +21,22 @@ type AnimatedContext = {
 
 const CURSOR_SIZE: number = 32;
 
-const ColorPicker: React.FC = () => {
-  const [gradientLayout, setGradientLayout] = useState<{ x: number; y: number }>({ x: 300, y: 300 });
-  const [blendColor, setBlendColor] = useState<string>('#ff0000');
+interface ColorPickerProps {
+  onChange(hex: string): void;
+}
+
+const ColorPicker: React.FC<ColorPickerProps> = ({ onChange }) => {
+  const theme = useTheme();
+  const [gradientBounds, setGradientBounds] = useState<{ x: number; y: number }>({ x: 300, y: 300 });
+
+  const hue = useSharedValue(0);
 
   const setBounds = useCallback(
     (event: LayoutChangeEvent) => {
       const { width, height } = event.nativeEvent.layout;
-      setGradientLayout({ x: width - CURSOR_SIZE, y: height - CURSOR_SIZE });
+      setGradientBounds({ x: width - CURSOR_SIZE, y: height - CURSOR_SIZE });
     },
-    [setGradientLayout],
+    [setGradientBounds],
   );
 
   const translation = {
@@ -36,6 +44,31 @@ const ColorPicker: React.FC = () => {
     y: useSharedValue(0),
   };
 
+  const hslToHex = useCallback((): string => {
+    'worklet';
+    const saturation: number = interpolate(translation.x.value, [0, gradientBounds.x], [0, 100], Extrapolate.CLAMP);
+    let lightness: number = interpolate(translation.y.value, [0, gradientBounds.y], [100, 0], Extrapolate.CLAMP);
+    lightness = lightness - saturation / 2;
+    lightness = lightness < 0 ? 0 : lightness;
+    lightness /= 100;
+    const a: number = (saturation * Math.min(lightness, 1 - lightness)) / 100;
+    const calc = (value: number) => {
+      const k = (value + hue.value / 30) % 12;
+      const color = lightness - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color)
+        .toString(16)
+        .padStart(2, '0');
+    };
+    return `#${calc(0)}${calc(8)}${calc(4)}`;
+  }, [gradientBounds.x, gradientBounds.y, hue.value, translation.x.value, translation.y.value]);
+  const onChangeHue = useCallback(
+    (h: number) => {
+      hue.value = h;
+      const hex: string = hslToHex();
+      runOnJS(onChange)(hex);
+    },
+    [hslToHex, hue.value, onChange],
+  );
   const gestureHandler = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, AnimatedContext>(
     {
       onStart: (_, context) => {
@@ -43,23 +76,35 @@ const ColorPicker: React.FC = () => {
         context.startY = translation.y.value;
       },
       onActive: (event, context) => {
-        translation.x.value = context.startX + event.translationX;
-        translation.y.value = context.startY + event.translationY;
+        translation.x.value = interpolate(
+          context.startX + event.translationX,
+          [0, gradientBounds.x],
+          [0, gradientBounds.x],
+          Extrapolate.CLAMP,
+        );
+        translation.y.value = interpolate(
+          context.startY + event.translationY,
+          [0, gradientBounds.y],
+          [0, gradientBounds.y],
+          Extrapolate.CLAMP,
+        );
       },
       onEnd: () => {
-        console.log('x', translation.x.value, 'y', translation.y.value);
+        const hex: string = hslToHex();
+        runOnJS(onChange)(hex);
       },
     },
-    [],
+    [gradientBounds],
   );
+
   const animatedStyles = useAnimatedStyle(() => {
     return {
       transform: [
         {
-          translateX: interpolate(translation.x.value, [0, gradientLayout.x], [0, gradientLayout.x], Extrapolate.CLAMP),
+          translateX: translation.x.value,
         },
         {
-          translateY: interpolate(translation.y.value, [0, gradientLayout.y], [0, gradientLayout.y], Extrapolate.CLAMP),
+          translateY: translation.y.value,
         },
       ],
     };
@@ -69,16 +114,23 @@ const ColorPicker: React.FC = () => {
     <View style={styles.container}>
       <LinearGradient
         start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        locations={[0, 0.5, 1]}
-        colors={['#fff', blendColor, '#000']}
+        end={{ x: 1, y: 0 }}
+        colors={['#fff', `hsl(${hue.value}, 100%, 50%)`]}
         style={styles.linearGradient}
         onLayout={setBounds}>
-        <PanGestureHandler onGestureEvent={gestureHandler}>
-          <Animated.View style={[styles.cursor, animatedStyles]} />
-        </PanGestureHandler>
+        <LinearGradient
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          colors={['transparent', '#000']}
+          style={styles.linearGradient}>
+          <PanGestureHandler onGestureEvent={gestureHandler}>
+            <Animated.View style={animatedStyles}>
+              <View style={[styles.cursor, { borderColor: theme.colors.background }]} />
+            </Animated.View>
+          </PanGestureHandler>
+        </LinearGradient>
       </LinearGradient>
-      <ColorSlider onValueChange={setBlendColor} />
+      <ColorSlider onChangeHue={onChangeHue} />
     </View>
   );
 };
@@ -90,7 +142,7 @@ const styles = StyleSheet.create({
   },
   linearGradient: {
     flex: 1,
-    borderRadius: 15,
+    borderRadius: Math.floor(CURSOR_SIZE / 2),
   },
   cursor: {
     height: CURSOR_SIZE,

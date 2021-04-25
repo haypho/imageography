@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import { AddGroupFormValues, validationSchema } from './addGroup.validation';
 import AddGroup from './AddGroup';
-import ColorService from '@app/services/color.service';
 import { GroupRepository } from '@app/services/repositories/group.repository';
 import { useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -14,7 +13,7 @@ import { Group } from '@app/models';
 const AddGroupForm: React.FC = () => {
   const initialValues: AddGroupFormValues = {
     name: '',
-    color: ColorService.random(),
+    color: '#FFFFFF',
   };
   const navigation = useNavigation<StackNavigationProp<GroupStackParamList>>();
   const dispatch = useDispatch();
