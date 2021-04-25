@@ -28,8 +28,9 @@ interface ColorPickerProps {
 const ColorPicker: React.FC<ColorPickerProps> = ({ onChange }) => {
   const theme = useTheme();
   const [gradientBounds, setGradientBounds] = useState<{ x: number; y: number }>({ x: 300, y: 300 });
-
   const hue = useSharedValue(0);
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
 
   const setBounds = useCallback(
     (event: LayoutChangeEvent) => {
@@ -39,16 +40,11 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ onChange }) => {
     [setGradientBounds],
   );
 
-  const translation = {
-    x: useSharedValue(0),
-    y: useSharedValue(0),
-  };
-
   const hslToHex = useCallback((): string => {
     'worklet';
-    const saturation: number = interpolate(translation.x.value, [0, gradientBounds.x], [0, 100], Extrapolate.CLAMP);
-    let lightness: number = interpolate(translation.y.value, [0, gradientBounds.y], [100, 0], Extrapolate.CLAMP);
-    lightness = lightness - saturation / 2;
+    const saturation: number = interpolate(translateX.value, [0, gradientBounds.x], [0, 100], Extrapolate.CLAMP);
+    let lightness: number = interpolate(translateY.value, [0, gradientBounds.y], [50, 0], Extrapolate.CLAMP);
+    lightness = lightness + (50 - saturation / 2);
     lightness = lightness < 0 ? 0 : lightness;
     lightness /= 100;
     const a: number = (saturation * Math.min(lightness, 1 - lightness)) / 100;
@@ -60,7 +56,8 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ onChange }) => {
         .padStart(2, '0');
     };
     return `#${calc(0)}${calc(8)}${calc(4)}`;
-  }, [gradientBounds.x, gradientBounds.y, hue.value, translation.x.value, translation.y.value]);
+  }, [gradientBounds.x, gradientBounds.y, hue.value, translateX, translateY]);
+
   const onChangeHue = useCallback(
     (h: number) => {
       hue.value = h;
@@ -69,20 +66,21 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ onChange }) => {
     },
     [hslToHex, hue.value, onChange],
   );
+
   const gestureHandler = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, AnimatedContext>(
     {
       onStart: (_, context) => {
-        context.startX = translation.x.value;
-        context.startY = translation.y.value;
+        context.startX = translateX.value;
+        context.startY = translateY.value;
       },
       onActive: (event, context) => {
-        translation.x.value = interpolate(
+        translateX.value = interpolate(
           context.startX + event.translationX,
           [0, gradientBounds.x],
           [0, gradientBounds.x],
           Extrapolate.CLAMP,
         );
-        translation.y.value = interpolate(
+        translateY.value = interpolate(
           context.startY + event.translationY,
           [0, gradientBounds.y],
           [0, gradientBounds.y],
@@ -97,18 +95,9 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ onChange }) => {
     [gradientBounds],
   );
 
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateX: translation.x.value,
-        },
-        {
-          translateY: translation.y.value,
-        },
-      ],
-    };
-  });
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }, { translateY: translateY.value }],
+  }));
 
   return (
     <View style={styles.container}>
